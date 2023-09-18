@@ -18,32 +18,41 @@
         >
 
 
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
             android:background="@color/primary"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/white"
+                android:titleTextAppearance="@font/semibold"
                 app:menu="@menu/top_app_bar"
                 app:navigationIcon="@drawable/ic_hamburger"
                 app:navigationIconTint="@color/white"
-                android:titleTextAppearance="@font/semibold"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary" />
-
-
+                app:title="@string/app_name"
+                app:titleTextColor="@color/white" />
 
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/ma_nav_graph_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="409dp"
+            android:layout_height="673dp"
+            android:layout_marginTop="1dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:navGraph="@navigation/nav_graph" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
