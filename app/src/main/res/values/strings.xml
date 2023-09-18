@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Movie Catalog</string>
+
+    <string name="navigation_drawer_open">Apri Drawer</string>
+    <string name="navigation_drawer_close">Chiudi Drawer</string>
+
+
+    <string name="more">More</string>
+
+    <!--Item Drawer_Menu -->
+    <string name="type">I Nostri Film</string>
+    <string name="ingredients">I Migliori Film</string>
+
 </resources>
