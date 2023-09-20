@@ -16,6 +16,9 @@
     <string name="tab_item_series">Serie TV</string>
     <string name="tab_item_games">Giochi</string>
 
+    <!--Errors-->
+    <string name="no_connection">Non sei connesso ad internet!</string>
+
     <string name="hello_blank_fragment">Blank Fragment</string>
 
 </resources>

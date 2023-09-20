@@ -1,20 +1,21 @@
 package it.step.moviecatalog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar  // Importa la Toolbar corretta
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
+import it.step.moviecatalog.viewmodel.MovieViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var topAppBar: Toolbar  // Usa la Toolbar corretta
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var navController: NavController
+
+    private val movieViewModel: MovieViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,5 +54,7 @@ class MainActivity : AppCompatActivity() {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_hamburger)
             }
         }
+
     }
+
 }

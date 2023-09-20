@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.HomeMovieFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hmf_all_movies_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Movie Fragment" />
+        android:layout_height="match_parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/hmf_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/hmf_all_movies_recycler"
+        app:layout_constraintEnd_toStartOf="@+id/hmf_all_movies_recycler"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/hmf_all_movies_recycler"
+        app:layout_constraintTop_toBottomOf="@+id/hmf_all_movies_recycler"
+        app:layout_constraintVertical_bias="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
