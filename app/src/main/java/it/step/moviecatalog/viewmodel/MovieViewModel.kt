@@ -1,5 +1,7 @@
 package it.step.moviecatalog.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +25,10 @@ class MovieViewModel : ViewModel() {
                                                     "Sci-Fi", "Fantasy", "Comedy", "Short",
                                                     "Family", "Crime", "Documentary", "Mystery",
                                                     "War", "Romance", "History", "Thriller", "Horror"))
+
+    val moviesList = MutableLiveData<List<Movie>?>(emptyList())
+    val seriesList = MutableLiveData<List<Movie>?>(emptyList())
+    val gamesList = MutableLiveData<List<Movie>?>(emptyList())
 
     fun getAllMovies() {
         viewModelScope.launch {
@@ -99,6 +105,60 @@ class MovieViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         typeMovies.postValue(response.body())
+                        Log.i("MYLOG", "${response.body()!!.get(0).title}")
+                    } else {
+                        Log.i("MYLOG", "Else 1")
+                        //TODO
+                    }
+                } else {
+                    Log.i("MYLOG", "Else 2")
+                    //TODO
+                }
+            }
+        }
+    }
+
+    fun initMovieList(){
+        viewModelScope.launch {
+            val response = apiService.findMovieByType("movie")
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        moviesList.postValue(response.body())
+                    } else {
+                        //TODO
+                    }
+                } else {
+                    //TODO
+                }
+            }
+        }
+    }
+
+    fun initSeriesList(){
+        viewModelScope.launch {
+            val response = apiService.findMovieByType("series")
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        seriesList.postValue(response.body())
+                    } else {
+                        //TODO
+                    }
+                } else {
+                    //TODO
+                }
+            }
+        }
+    }
+
+    fun initGamesList(){
+        viewModelScope.launch {
+            val response = apiService.findMovieByType("game")
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        gamesList.postValue(response.body())
                     } else {
                         //TODO
                     }

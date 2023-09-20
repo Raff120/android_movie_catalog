@@ -1,23 +1,30 @@
 package it.step.moviecatalog
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar  // Importa la Toolbar corretta
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 import it.step.moviecatalog.fragment.CategoryFragment
+import it.step.moviecatalog.viewmodel.MovieViewModel
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var topAppBar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var navController: NavController
+
+    private val movieViewModel: MovieViewModel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,10 +55,11 @@ class MainActivity : AppCompatActivity() {
                         drawerLayout.openDrawer(navigationView)
                     }
                 }
-            } else  {
+            } else {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_hamburger)
             }
         }
+
 
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -60,11 +68,13 @@ class MainActivity : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     true
                 }
-                R.id.cerca->{
+
+                R.id.cerca -> {
                     navController.navigate(R.id.searchFragment)
                     drawerLayout.closeDrawers()
                     true
                 }
+
                 else -> false
             }
         }
@@ -73,6 +83,9 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
+
 
 
 

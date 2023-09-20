@@ -16,6 +16,7 @@
     <string name="tab_item_series">Serie TV</string>
     <string name="tab_item_games">Giochi</string>
 
+
     <!-- List Chips -->
     <string name="Action">Action</string>
     <string name="Adventure">Adventure</string>
@@ -34,6 +35,10 @@
     <string name="History">History</string>
     <string name="Thriller">Thriller</string>
     <string name="Horror">Horror</string>
+
+
+    <!--Errors-->
+    <string name="no_connection">Non sei connesso ad internet!</string>
 
 
     <string name="hello_blank_fragment">Blank Fragment</string>
