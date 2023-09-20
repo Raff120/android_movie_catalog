@@ -12,7 +12,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import it.step.moviecatalog.R
+import it.step.moviecatalog.adapter.ViewPagerAdapter
 import it.step.moviecatalog.configuration.ApiManager
 import it.step.moviecatalog.databinding.FragmentHomeBinding
 import it.step.moviecatalog.viewmodel.MovieViewModel
@@ -42,18 +46,24 @@ class HomeFragment : Fragment() {
         bindingHome = FragmentHomeBinding.inflate(layoutInflater)
         view = bindingHome.root
 
-        val buttonToCategory = view.findViewById<Button>(R.id.button2)
-
-        buttonToCategory.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.action_homeFragment_to_categoryFragment)
-        }
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        super.onViewCreated(view, savedInstanceState)
+
+        val viewPager: ViewPager2 = view.findViewById(R.id.viewPager)
+        val fragments = listOf(HomeMovieFragment(), HomeSeriesFragment(), HomeGameFragment()) // Replace with your fragment instances
+        val adapter = ViewPagerAdapter(fragments, childFragmentManager, lifecycle)
+        viewPager.adapter = adapter
+
+        val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            // Set tab text or icon here if needed
+            tab.text = "Tab ${position + 1}"
+        }.attach()
     }
 
     override fun onDestroy() {
