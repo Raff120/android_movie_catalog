@@ -62,7 +62,9 @@ class HomeFragment : Fragment() {
         val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             // Set tab text or icon here if needed
-            tab.text = "Tab ${position + 1}"
+            if(position == 0) tab.text = getString(R.string.tab_item_movies)
+            if(position == 1) tab.text = getString(R.string.tab_item_series)
+            if(position == 2) tab.text = getString(R.string.tab_item_games)
         }.attach()
     }
 

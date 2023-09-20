@@ -15,7 +15,9 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabIndicatorColor="@color/white_smoke"
         app:tabSelectedTextColor="@color/white_smoke"
-        app:tabTextColor="@color/white_smoke" />
+        app:tabTextColor="@color/white_smoke">
+
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
