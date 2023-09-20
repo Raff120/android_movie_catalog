@@ -1,42 +1,57 @@
 package it.step.moviecatalog
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toolbar
-import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar  // Importa la Toolbar corretta
 import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.appbar.MaterialToolbar
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
-    lateinit var topAppBar : MaterialToolbar
+    private lateinit var topAppBar: Toolbar  // Usa la Toolbar corretta
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         topAppBar = findViewById(R.id.topAppBar)
+        setSupportActionBar(topAppBar)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.ma_nav_graph_host) as NavHostFragment
+        navController = navHostFragment.navController
+
+
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
 
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            topAppBar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
 
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
+        // Imposta l'OnClickListener dell'AppBar
         topAppBar.setNavigationOnClickListener {
             drawerLayout.openDrawer(navigationView)
         }
 
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Verifica la destinazione corrente e cambia l'icona dell'AppBar di conseguenza
+            if (destination.id == R.id.categoryFragment || destination.id == R.id.detailsFragment || destination.id == R.id.searchFragment) {
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_24)
+                topAppBar.setNavigationOnClickListener {
+                    navController.navigateUp()
+                    topAppBar.setNavigationOnClickListener {
+                        drawerLayout.openDrawer(navigationView)
+                    }
+                }
+            } else  {
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_hamburger)
+            }
+        }
     }
 }
