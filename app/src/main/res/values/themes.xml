@@ -8,5 +8,14 @@
 
     </style>
 
+    <style name="ChipStyle" parent="Widget.Material3.Chip.Filter">
+
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="checkedIconTint">@color/white</item>
+
+    </style>
+
     <style name="Theme.MovieCatalog" parent="Base.Theme.MovieCatalog" />
 </resources>
