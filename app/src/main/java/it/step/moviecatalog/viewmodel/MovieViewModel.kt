@@ -20,11 +20,16 @@ class MovieViewModel : ViewModel() {
     val searchedMovies = MutableLiveData<List<Movie>?>(null)
     val genreMovies = MutableLiveData<List<Movie>?>(null)
     val typeMovies = MutableLiveData<List<Movie>?>(null)
-    val categories = MutableLiveData<List<String>>(listOf(
-                                                    "Action","Adventure","Drama","Animation",
-                                                    "Sci-Fi", "Fantasy", "Comedy", "Short",
-                                                    "Family", "Crime", "Documentary", "Mystery",
-                                                    "War", "Romance", "History", "Thriller", "Horror"))
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    private val _isLoading = MutableLiveData(false)
+    val categories = MutableLiveData<List<String>>(
+        listOf(
+            "Action", "Adventure", "Drama", "Animation",
+            "Sci-Fi", "Fantasy", "Comedy", "Short",
+            "Family", "Crime", "Documentary", "Mystery",
+            "War", "Romance", "History", "Thriller", "Horror"
+        )
+    )
 
     val moviesList = MutableLiveData<List<Movie>?>(emptyList())
     val seriesList = MutableLiveData<List<Movie>?>(emptyList())
@@ -118,24 +123,28 @@ class MovieViewModel : ViewModel() {
         }
     }
 
-    fun initMovieList(){
+    fun initMovieList() {
+        _isLoading.value = true
         viewModelScope.launch {
             val response = apiService.findMovieByType("movie")
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         moviesList.postValue(response.body())
+                        _isLoading.value = false
                     } else {
                         //TODO
+                        _isLoading.value = false
                     }
                 } else {
                     //TODO
+                    _isLoading.value = false
                 }
             }
         }
     }
 
-    fun initSeriesList(){
+    fun initSeriesList() {
         viewModelScope.launch {
             val response = apiService.findMovieByType("series")
             withContext(Dispatchers.Main) {
@@ -152,7 +161,7 @@ class MovieViewModel : ViewModel() {
         }
     }
 
-    fun initGamesList(){
+    fun initGamesList() {
         viewModelScope.launch {
             val response = apiService.findMovieByType("game")
             withContext(Dispatchers.Main) {

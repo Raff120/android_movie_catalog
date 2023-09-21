@@ -54,6 +54,14 @@ class HomeSeriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingHomeSeries.hsfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingHomeSeries.hsfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+            }
+        }
+
         if (isNetworkConnected(requireContext())) {
             val recyclerView: RecyclerView = view.findViewById(R.id.hsf_all_series_recycler)
 
