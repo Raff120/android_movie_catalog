@@ -54,13 +54,13 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-//            if (isLoading) {
-//                bindingHomeMovies.hmfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
-//            } else {
-//                bindingHomeMovies.hmfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
-//            }
-//        }
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingSearch.sfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingSearch.sfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+            }
+        }
 
         if (isNetworkConnected(requireContext())) {
             val recyclerView: RecyclerView = view.findViewById(R.id.sf_searched_recycler)
@@ -77,9 +77,9 @@ class SearchFragment : Fragment() {
                     recyclerView.layoutManager = layoutManager
                     recyclerView.adapter = movieAdapter
 
-//                    if (newSearchList.isEmpty()) bindingSearch.hmfMessage.text =
-//                        getString(R.string.empty_list)
-//                    else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
+                    if (newSearchList.isEmpty()) bindingSearch.sfMessage.text =
+                        getString(R.string.empty_list)
+                    else bindingSearch.sfMessage.text = getString(R.string.empty_string)
                 }
             }
 
