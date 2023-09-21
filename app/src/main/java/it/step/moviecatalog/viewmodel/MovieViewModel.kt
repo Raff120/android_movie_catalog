@@ -27,18 +27,22 @@ class MovieViewModel : ViewModel() {
     fun getByID(id: String) {
         _isLoading.value = true
         viewModelScope.launch {
-            val response = apiService.getMovieByID(id)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        movie.postValue(response.body())
-                        _isLoading.value = false
+            try {
+                val response = apiService.getMovieByID(id)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            movie.postValue(response.body())
+                            _isLoading.value = false
+                        } else {
+                            _isLoading.value = false
+                        }
                     } else {
                         _isLoading.value = false
                     }
-                } else {
-                    _isLoading.value = false
                 }
+            }catch (e: Exception){
+                _isLoading.value = false
             }
         }
     }
@@ -46,76 +50,111 @@ class MovieViewModel : ViewModel() {
     fun initMovieList() {
         _isLoading.value = true
         viewModelScope.launch {
-            val response = apiService.findMovieByType("movie")
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        moviesList.postValue(response.body())
-                        _isLoading.value = false
+
+            try {
+
+                val response = apiService.findMovieByType("movie")
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            moviesList.postValue(response.body())
+                            _isLoading.value = false
+                        } else {
+                            _isLoading.value = false
+                        }
                     } else {
                         _isLoading.value = false
                     }
-                } else {
-                    _isLoading.value = false
                 }
+
+            }catch (e: Exception){
+                _isLoading.value = false
             }
+
         }
     }
 
     fun initSeriesList() {
         _isLoading.value = true
         viewModelScope.launch {
-            val response = apiService.findMovieByType("series")
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        seriesList.postValue(response.body())
-                        _isLoading.value = false
+
+            try {
+
+                val response = apiService.findMovieByType("series")
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            seriesList.postValue(response.body())
+                            _isLoading.value = false
+                        } else {
+                            _isLoading.value = false
+                        }
                     } else {
                         _isLoading.value = false
                     }
-                } else {
-                    _isLoading.value = false
                 }
+
+            }catch (e: Exception){
+                _isLoading.value = false
             }
+
+
         }
     }
 
     fun initGamesList() {
         _isLoading.value = true
         viewModelScope.launch {
-            val response = apiService.findMovieByType("game")
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        gamesList.postValue(response.body())
-                        _isLoading.value = false
+
+            try {
+
+                val response = apiService.findMovieByType("game")
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            gamesList.postValue(response.body())
+                            _isLoading.value = false
+                        } else {
+                            _isLoading.value = false
+                        }
                     } else {
                         _isLoading.value = false
                     }
-                } else {
-                    _isLoading.value = false
                 }
+
+            }catch (e: Exception){
+                _isLoading.value = false
             }
+
+
         }
     }
 
     fun initSearchList() {
         _isLoading.value = true
         viewModelScope.launch {
-            val response = apiService.getAllMovies()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        searchedMovies.postValue(response.body())
-                        _isLoading.value = false
+
+            try {
+
+                val response = apiService.getAllMovies()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            searchedMovies.postValue(response.body())
+                            _isLoading.value = false
+                        } else {
+                            _isLoading.value = false
+                        }
                     } else {
                         _isLoading.value = false
                     }
-                } else {
-                    _isLoading.value = false
                 }
+
+            }catch (e: Exception){
+                _isLoading.value = false
             }
+
+
         }
     }
 }
