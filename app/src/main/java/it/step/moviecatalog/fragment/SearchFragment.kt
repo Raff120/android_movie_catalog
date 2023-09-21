@@ -1,60 +1,115 @@
 package it.step.moviecatalog.fragment
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import it.step.moviecatalog.R
+import it.step.moviecatalog.adapter.MovieAdapter
+import it.step.moviecatalog.databinding.FragmentSearchBinding
+import it.step.moviecatalog.model.Movie
+import it.step.moviecatalog.viewmodel.MovieViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val movieViewModel: MovieViewModel by viewModels()
+    private lateinit var movieAdapter: MovieAdapter
+    private var searchList: List<Movie> = emptyList()
+    private lateinit var bindingSearch: FragmentSearchBinding
+    private lateinit var view : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+
+        if (isNetworkConnected(requireContext())) {
+
+            movieViewModel.initSearchList()
+
+            // Inflate the layout for this fragment
+            bindingSearch = FragmentSearchBinding.inflate(layoutInflater)
+            view = bindingSearch.root
+        } else {
+            view = inflater.inflate(R.layout.no_connection_layout, container, false)
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingSearch.sfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingSearch.sfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+            }
+        }
+
+        if (isNetworkConnected(requireContext())) {
+            val recyclerView: RecyclerView = view.findViewById(R.id.sf_searched_recycler)
+
+            // Create the observer which updates the UI.
+            val searchListObserver = Observer<List<Movie>?> { newSearchList ->
+                // Update the UI
+                if (newSearchList != null) {
+                    searchList = newSearchList
+                    movieAdapter = MovieAdapter(searchList){ movie ->
+                        //TODO
+                    }
+                    val layoutManager = LinearLayoutManager(requireContext())
+                    recyclerView.layoutManager = layoutManager
+                    recyclerView.adapter = movieAdapter
+
+                    if (newSearchList.isEmpty()) bindingSearch.sfMessage.text =
+                        getString(R.string.empty_list)
+                    else bindingSearch.sfMessage.text = getString(R.string.empty_string)
                 }
             }
+
+            // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+            movieViewModel.searchedMovies.observe(viewLifecycleOwner, searchListObserver)
+
+            val divider =
+                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+            recyclerView.addItemDecoration(divider)
+        }
+
+        bindingSearch.sfSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                movieAdapter?.getFilter()?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                movieAdapter?.getFilter()?.filter(newText);
+                return true
+            }
+
+        })
     }
+
+    fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
 }
