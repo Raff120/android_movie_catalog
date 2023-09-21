@@ -16,12 +16,55 @@ class MovieViewModel : ViewModel() {
     private var apiService = ApiManager.movieService
     val movie = MutableLiveData<Movie?>(null)
     val searchedMovies = MutableLiveData<List<Movie>?>(null)
+    val genreMovies = MutableLiveData<List<Movie>?>(null)
+
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _isLoading = MutableLiveData(false)
 
     val moviesList = MutableLiveData<List<Movie>?>(emptyList())
     val seriesList = MutableLiveData<List<Movie>?>(emptyList())
     val gamesList = MutableLiveData<List<Movie>?>(emptyList())
+
+
+    fun getAllMoviesByCategories() {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val response = apiService.getAllMovies()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        genreMovies.postValue(response.body())
+                        _isLoading.value = false
+                    } else {
+                        _isLoading.value = false
+                    }
+                } else {
+                    _isLoading.value = false
+                }
+            }
+        }
+    }
+
+    fun findByGenre(genre: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val response = apiService.findMovieByGenre(genre)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        genreMovies.postValue(response.body())
+                        _isLoading.value = false
+                    } else {
+                        //TODO
+                        _isLoading.value = false
+                    }
+                } else {
+                    //TODO
+                    _isLoading.value = false
+                }
+            }
+        }
+    }
 
 
     fun getByID(id: String) {

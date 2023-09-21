@@ -22,7 +22,6 @@
     <string name="Adventure">Adventure</string>
     <string name="Drama">Drama</string>
     <string name="Animation">Animation</string>
-    <string name="SciFi">Sci-Fi</string>
     <string name="Fantasy">Fantasy</string>
     <string name="Comedy">Comedy</string>
     <string name="Short">Short</string>
@@ -34,7 +33,6 @@
     <string name="Romance">Romance</string>
     <string name="History">History</string>
     <string name="Thriller">Thriller</string>
-    <string name="Horror">Horror</string>
 
 
     <!--Errors-->
