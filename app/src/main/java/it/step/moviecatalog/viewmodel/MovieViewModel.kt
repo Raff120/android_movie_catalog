@@ -35,13 +35,13 @@ class MovieViewModel : ViewModel() {
     val seriesList = MutableLiveData<List<Movie>?>(emptyList())
     val gamesList = MutableLiveData<List<Movie>?>(emptyList())
 
-    fun getAllMovies() {
+    fun getAllMoviesByCategories() {
         viewModelScope.launch {
             val response = apiService.getAllMovies()
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        allMovies.postValue(response.body())
+                        genreMovies.postValue(response.body())
                     } else {
                         //TODO
                     }

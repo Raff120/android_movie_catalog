@@ -8,15 +8,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Categorie"
-        android:textSize="29dp"
-        android:fontFamily="@font/bold"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
@@ -79,14 +71,7 @@
             style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Comedy" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip16"
-            style="@style/ChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Horror" />
+            android:text="@string/Drama" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip10"
@@ -109,12 +94,6 @@
             android:layout_height="wrap_content"
             android:text="@string/History" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip14"
-            style="@style/ChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/SciFi" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip15"
@@ -133,13 +112,39 @@
     </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="438dp"
-        android:layout_height="195dp"
+        android:id="@+id/cf_allmovie_recycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chipGroup"
-        app:layout_constraintVertical_bias="0.084" />
+        app:layout_constraintVertical_bias="0.0" />
 
+    <ProgressBar
+        android:id="@+id/cf_progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <TextView
+        android:id="@+id/cf_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/cf_allmovie_recycle"
+        app:layout_constraintEnd_toStartOf="@+id/cf_allmovie_recycle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cf_allmovie_recycle"
+        app:layout_constraintTop_toBottomOf="@+id/cf_allmovie_recycle"
+        app:layout_constraintVertical_bias="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>
