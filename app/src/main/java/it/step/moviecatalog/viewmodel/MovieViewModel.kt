@@ -178,5 +178,20 @@ class MovieViewModel : ViewModel() {
         }
     }
 
-
+    fun initSearchList() {
+        viewModelScope.launch {
+            val response = apiService.getAllMovies()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        searchedMovies.postValue(response.body())
+                    } else {
+                        //TODO
+                    }
+                } else {
+                    //TODO
+                }
+            }
+        }
+    }
 }
