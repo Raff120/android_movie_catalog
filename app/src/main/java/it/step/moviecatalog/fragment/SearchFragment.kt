@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -89,6 +90,19 @@ class SearchFragment : Fragment() {
                 MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             recyclerView.addItemDecoration(divider)
         }
+
+        bindingSearch.sfSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                movieAdapter?.getFilter()?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                movieAdapter?.getFilter()?.filter(newText);
+                return true
+            }
+
+        })
     }
 
     fun isNetworkConnected(context: Context): Boolean {
