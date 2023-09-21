@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -69,8 +70,10 @@ class HomeMovieFragment : Fragment() {
                 // Update the UI
                 if (newMovieList != null) {
                     moviesList = newMovieList
-                    movieAdapter = MovieAdapter(moviesList) { movie ->
-                        //TODO on click
+                    movieAdapter = MovieAdapter(moviesList){ movie ->
+                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movie.imdbID
+                        )
+                        findNavController().navigate(action)
                     }
                     val layoutManager = LinearLayoutManager(requireContext())
                     recyclerView.layoutManager = layoutManager
@@ -99,4 +102,7 @@ class HomeMovieFragment : Fragment() {
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
+
+
 }
+
