@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,16 +18,14 @@ import it.step.moviecatalog.adapter.MovieAdapter
 import it.step.moviecatalog.databinding.FragmentHomeMovieBinding
 import it.step.moviecatalog.model.Movie
 import it.step.moviecatalog.viewmodel.MovieViewModel
-import java.net.ConnectException
 
 class HomeMovieFragment : Fragment() {
 
     private val movieViewModel: MovieViewModel by viewModels()
     private lateinit var movieAdapter: MovieAdapter
-    private var moviesList : List<Movie> = emptyList()
+    private var moviesList: List<Movie> = emptyList()
     private lateinit var bindingHomeMovies: FragmentHomeMovieBinding
-    private lateinit var view : View
-    private var listLoaded = true
+    private lateinit var view: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +37,14 @@ class HomeMovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        if(isNetworkConnected(requireContext())) {
+        if (isNetworkConnected(requireContext())) {
 
             movieViewModel.initMovieList()
 
             // Inflate the layout for this fragment
             bindingHomeMovies = FragmentHomeMovieBinding.inflate(layoutInflater)
             view = bindingHomeMovies.root
-        }else{
+        } else {
             view = inflater.inflate(R.layout.no_connection_layout, container, false)
         }
 
@@ -57,7 +54,15 @@ class HomeMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(isNetworkConnected(requireContext())){
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingHomeMovies.hmfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingHomeMovies.hmfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+            }
+        }
+
+        if (isNetworkConnected(requireContext())) {
             val recyclerView: RecyclerView = view.findViewById(R.id.hmf_all_movies_recycler)
 
             // Create the observer which updates the UI.
@@ -69,22 +74,22 @@ class HomeMovieFragment : Fragment() {
                         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movie.imdbID
                         )
                         findNavController().navigate(action)
-
-
                     }
                     val layoutManager = LinearLayoutManager(requireContext())
                     recyclerView.layoutManager = layoutManager
                     recyclerView.adapter = movieAdapter
 
-                    if(newMovieList.isEmpty()) bindingHomeMovies.hmfMessage.text = "Lista vuota"
-                    else bindingHomeMovies.hmfMessage.text = ""
+                    if (newMovieList.isEmpty()) bindingHomeMovies.hmfMessage.text =
+                        getString(R.string.empty_list)
+                    else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
                 }
             }
 
             // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
             movieViewModel.moviesList.observe(viewLifecycleOwner, movieListObserver)
 
-            val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL )
+            val divider =
+                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             recyclerView.addItemDecoration(divider)
         }
 
@@ -92,7 +97,8 @@ class HomeMovieFragment : Fragment() {
     }
 
     fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }

@@ -1,29 +1,16 @@
 package it.step.moviecatalog.fragment
 
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.bumptech.glide.Glide
-import it.step.moviecatalog.R
-import it.step.moviecatalog.adapter.MovieAdapter
 import it.step.moviecatalog.databinding.FragmentDetailsBinding
-import it.step.moviecatalog.databinding.FragmentHomeBinding
 import it.step.moviecatalog.model.Movie
 import it.step.moviecatalog.viewmodel.MovieViewModel
-import java.net.HttpURLConnection
-import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,11 +48,11 @@ class DetailsFragment : Fragment() {
         val movieObserver = Observer<Movie?> { newMovie ->
             // Update the UI
             if (newMovie != null) {
-                bindingDetails.imageView2.load(newMovie.poster)
-                bindingDetails.textView3.text=newMovie.title
-                bindingDetails.textView4.text=newMovie.plot
-                bindingDetails.textView6.text=newMovie.actors
-                bindingDetails.textView8.text=newMovie.director
+                bindingDetails.imPosterDetails.load(newMovie.poster)
+                bindingDetails.titleDetails.text=newMovie.title
+                bindingDetails.plotDetails.text=newMovie.plot
+                bindingDetails.listActorsDetails.text=newMovie.actors
+                bindingDetails.directorDetails.text=newMovie.director
             }
         }
 

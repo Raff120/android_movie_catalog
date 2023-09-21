@@ -21,13 +21,13 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/im_poster_details"
                 android:layout_width="397dp"
                 android:layout_height="214dp"
                  />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/title_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bold"
@@ -35,7 +35,7 @@
                 android:textSize="29dp" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/plot_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/regular"
@@ -43,7 +43,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/Actors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/semibold"
@@ -51,7 +51,7 @@
                 android:textSize="29dp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/list_actors_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="84dp"
@@ -69,7 +69,7 @@
                 android:textSize="29dp" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/director_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="75dp"

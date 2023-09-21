@@ -40,6 +40,10 @@
     <!--Errors-->
     <string name="no_connection">Non sei connesso ad internet!</string>
 
+    <!--Utils-->
+    <string name="empty_list">Lista vuota</string>
+    <string name="empty_string"></string>
+
 
     <string name="hello_blank_fragment">Blank Fragment</string>
 
