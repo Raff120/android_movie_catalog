@@ -55,5 +55,21 @@
         <action
             android:id="@+id/action_detailsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <argument
+            android:name="imdbID"
+            app:argType="string" />
+
+
     </fragment>
+    <fragment
+        android:id="@+id/HomeMovieFragment"
+        android:name="it.step.moviecatalog.fragment.HomeMovieFragment"
+        android:label="fragment_home_movie"
+        tools:layout="@layout/fragment_home_movie" >
+        <action
+            android:id="@+id/action_homeMovieFragment2_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+
 </navigation>

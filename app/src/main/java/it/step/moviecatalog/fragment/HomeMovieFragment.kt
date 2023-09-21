@@ -66,7 +66,11 @@ class HomeMovieFragment : Fragment() {
                 if (newMovieList != null) {
                     moviesList = newMovieList
                     movieAdapter = MovieAdapter(moviesList){ movie ->
-                        //TODO on click
+                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movie.imdbID
+                        )
+                        findNavController().navigate(action)
+
+
                     }
                     val layoutManager = LinearLayoutManager(requireContext())
                     recyclerView.layoutManager = layoutManager
@@ -92,4 +96,7 @@ class HomeMovieFragment : Fragment() {
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
+
+
 }
+
