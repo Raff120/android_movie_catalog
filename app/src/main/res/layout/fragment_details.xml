@@ -7,8 +7,8 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="410dp"
-        android:layout_height="698dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -17,28 +17,28 @@
         app:layout_constraintVertical_bias="0.484">
 
         <androidx.cardview.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
-            tools:ignore="MissingConstraints">
+           >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
-                android:padding="16dp"
-                >
+                android:padding="28dp">
 
                 <ImageView
                     android:id="@+id/im_poster_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    />
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/title_details"
@@ -46,61 +46,61 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/bold"
+                    android:gravity="center"
                     android:text="Movie Title"
                     android:textSize="24sp"
-                    android:gravity="center"
                     tools:text="Movie Title" />
 
                 <TextView
                     android:id="@+id/plot_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/regular"
                     android:text="Plot"
                     android:textSize="16sp"
-                    android:layout_marginTop="8dp"
                     tools:text="Movie Plot" />
 
                 <TextView
                     android:id="@+id/Actors"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/semibold"
+                    android:gravity="center"
                     android:text="Actors"
                     android:textSize="24sp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
                     tools:text="Actors" />
 
                 <TextView
                     android:id="@+id/list_actors_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/regular"
                     android:text="Lista Attori"
                     android:textSize="16sp"
-                    android:layout_marginTop="8dp"
                     tools:text="Lista degli Attori" />
 
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/semibold"
+                    android:gravity="center"
                     android:text="Directors"
                     android:textSize="24sp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
                     tools:text="Directors" />
 
                 <TextView
                     android:id="@+id/director_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/regular"
                     android:text="Lista Registi"
                     android:textSize="16sp"
-                    android:layout_marginTop="8dp"
                     tools:text="Lista dei Registi" />
 
             </LinearLayout>
