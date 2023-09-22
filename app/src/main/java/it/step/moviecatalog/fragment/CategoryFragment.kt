@@ -67,76 +67,73 @@ class CategoryFragment : Fragment() {
 
         return view
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) {
-                bindingCategory.cfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
-            } else {
-                bindingCategory.cfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
-            }
-        }
+        if (isNetworkConnected(requireContext())) {
 
-        bindingCategory.chipGroup.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.chip4 -> movieViewModel.getAllMoviesByCategories()
-                R.id.chip3 -> movieViewModel.findByGenre("action")
-                R.id.chip -> movieViewModel.findByGenre("Adventure")
-                R.id.chip2 -> movieViewModel.findByGenre("Animation")
-                R.id.chip6 -> movieViewModel.findByGenre("Crime")
-                R.id.chip8 -> movieViewModel.findByGenre("Comedy")
-                R.id.chip9 -> movieViewModel.findByGenre("Drama")
-                R.id.chip10 -> movieViewModel.findByGenre("Family")
-                R.id.chip11 -> movieViewModel.findByGenre("Fantasy")
-                R.id.chip12 -> movieViewModel.findByGenre("History")
-                R.id.chip15 -> movieViewModel.findByGenre("Short")
-                R.id.chip17 -> movieViewModel.findByGenre("Thriller")
-
-            }
-
-            updateRecyclerView(selectedGenre.toString())
-        }
-        val recyclerView: RecyclerView = bindingCategory.cfAllmovieRecycle
-
-        movieViewModel.moviesList.removeObservers(viewLifecycleOwner)
-
-        val movieListObserver = Observer<List<Movie>?> { newMovieList ->
-            if (newMovieList != null) {
-                moviesList = newMovieList
-                movieAdapter = MovieAdapter(moviesList) { movie ->
-                    val action =
-                        CategoryFragmentDirections.actionCategoryFragmentToDetailsFragment(movie.imdbID)
-                    findNavController().navigate(action)
-                }
-                val layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.layoutManager = layoutManager
-                recyclerView.adapter = movieAdapter
-
-                if (newMovieList.isEmpty()) {
-                    bindingCategory.cfMessage.text = getString(R.string.empty_list)
+            movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                if (isLoading) {
+                    bindingCategory.cfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
                 } else {
-                    bindingCategory.cfMessage.text = getString(R.string.empty_string)
+                    bindingCategory.cfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
                 }
             }
+
+            bindingCategory.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+                when (checkedId) {
+                    R.id.chip4 -> movieViewModel.getAllMoviesByCategories()
+                    R.id.chip3 -> movieViewModel.findByGenre("action")
+                    R.id.chip -> movieViewModel.findByGenre("Adventure")
+                    R.id.chip2 -> movieViewModel.findByGenre("Animation")
+                    R.id.chip6 -> movieViewModel.findByGenre("Crime")
+                    R.id.chip8 -> movieViewModel.findByGenre("Comedy")
+                    R.id.chip9 -> movieViewModel.findByGenre("Drama")
+                    R.id.chip10 -> movieViewModel.findByGenre("Family")
+                    R.id.chip11 -> movieViewModel.findByGenre("Fantasy")
+                    R.id.chip12 -> movieViewModel.findByGenre("History")
+                    R.id.chip15 -> movieViewModel.findByGenre("Short")
+                    R.id.chip17 -> movieViewModel.findByGenre("Thriller")
+
+                }
+
+            }
+            val recyclerView: RecyclerView = bindingCategory.cfAllmovieRecycle
+
+            movieViewModel.moviesList.removeObservers(viewLifecycleOwner)
+
+            val movieListObserver = Observer<List<Movie>?> { newMovieList ->
+                if (newMovieList != null) {
+                    moviesList = newMovieList
+                    movieAdapter = MovieAdapter(moviesList) { movie ->
+                        val action =
+                            CategoryFragmentDirections.actionCategoryFragmentToDetailsFragment(movie.imdbID)
+                        findNavController().navigate(action)
+                    }
+                    val layoutManager = LinearLayoutManager(requireContext())
+                    recyclerView.layoutManager = layoutManager
+                    recyclerView.adapter = movieAdapter
+
+                    if (newMovieList.isEmpty()) {
+                        bindingCategory.cfMessage.text = getString(R.string.empty_list)
+                    } else {
+                        bindingCategory.cfMessage.text = getString(R.string.empty_string)
+                    }
+                }
+            }
+
+            // Osserva la LiveData per il genere selezionato
+//            movieViewModel.findByGenre(genre)
+            movieViewModel.genreMovies.observe(viewLifecycleOwner, movieListObserver)
+
+            val divider =
+                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+            recyclerView.addItemDecoration(divider)
         }
 
-        movieViewModel.genreMovies.observe(viewLifecycleOwner, movieListObserver)
-
-        val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-        recyclerView.addItemDecoration(divider)
-    }
-
-
-
-        fun updateRecyclerView(genre: String) {
-
-        }
-
-
 
     }
-
 
     fun isNetworkConnected(context: Context): Boolean {
         val connectivityManager =
@@ -145,5 +142,4 @@ class CategoryFragment : Fragment() {
         return networkInfo != null && networkInfo.isConnected
     }
 
-
-
+}

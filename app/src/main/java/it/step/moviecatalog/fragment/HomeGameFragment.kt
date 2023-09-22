@@ -53,15 +53,16 @@ class HomeGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) {
-                bindingHomeGame.hgfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
-            } else {
-                bindingHomeGame.hgfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
-            }
-        }
-
         if (isNetworkConnected(requireContext())) {
+
+            movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                if (isLoading) {
+                    bindingHomeGame.hgfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+                } else {
+                    bindingHomeGame.hgfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+                }
+            }
+
             val recyclerView: RecyclerView = view.findViewById(R.id.hgf_all_games_recycler)
 
             // Create the observer which updates the UI.
