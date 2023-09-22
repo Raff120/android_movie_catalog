@@ -7,6 +7,6 @@
     <color name="primary">#5D1049</color>
     <color name="secondary">#E30425</color>
     <color name="colorPrimaryDark">#4E0D3A</color>
-
+    <color name="colorStarDetails">#F9AA33</color>
     <color name="chipgrey">#888888</color>
 </resources>

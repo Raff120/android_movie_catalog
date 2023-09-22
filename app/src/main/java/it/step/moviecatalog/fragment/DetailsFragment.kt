@@ -2,11 +2,13 @@ package it.step.moviecatalog.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -47,7 +49,23 @@ class DetailsFragment : Fragment() {
                     bindingDetails.imPosterDetails.load(newMovie.poster){
                         transformations(RoundedCornersTransformation(30F))
                     }
+
                     bindingDetails.titleDetails.text = newMovie.title
+                    val ratingValue = newMovie.imdbrating?.toFloatOrNull()
+                    if (ratingValue != null) {
+                        val color = when {
+                            ratingValue >= 4.0 -> R.color.colorStarDetails
+                            ratingValue >= 3.0 -> R.color.colorStarDetails
+                            ratingValue >= 2.0 -> R.color.colorStarDetails
+                            ratingValue >= 1.0 -> R.color.colorStarDetails
+                            else -> R.color.colorPrimaryDark
+                        }
+                        bindingDetails.ratingBar.rating = ratingValue
+                        bindingDetails.ratingBar.setProgressTintList(
+                            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), color)))
+
+                    }
+
                     bindingDetails.plotDetails.text = newMovie.plot
                     bindingDetails.listActorsDetails.text = newMovie.actors
                     bindingDetails.directorDetails.text = newMovie.director

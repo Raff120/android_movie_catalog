@@ -28,7 +28,6 @@
             app:cardElevation="4dp"
            >
 
-
             <LinearLayout
                 android:layout_width="367dp"
                 android:layout_height="wrap_content"
@@ -56,6 +55,13 @@
                     android:text="Movie Title"
                     android:textSize="24sp"
                     tools:text="Movie Title" />
+
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5" />
 
                 <TextView
                     android:id="@+id/plot_details"
