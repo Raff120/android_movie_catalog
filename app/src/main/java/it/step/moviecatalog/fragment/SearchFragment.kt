@@ -1,5 +1,6 @@
 package it.step.moviecatalog.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.adapter.MovieAdapter
 import it.step.moviecatalog.databinding.FragmentSearchBinding
@@ -26,7 +28,8 @@ class SearchFragment : Fragment() {
     private lateinit var movieAdapter: MovieAdapter
     private var searchList: List<Movie> = emptyList()
     private lateinit var bindingSearch: FragmentSearchBinding
-    private lateinit var view : View
+    private lateinit var view: View
+    private lateinit var mainActivity: Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,8 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        if (isNetworkConnected(requireContext())) {
+        mainActivity = requireActivity() as MainActivity
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.initSearchList()
 
@@ -55,13 +59,15 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (isNetworkConnected(requireContext())) {
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
                 if (isLoading) {
-                    bindingSearch.sfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+                    bindingSearch.sfProgressBar.visibility =
+                        View.VISIBLE // Mostra la ProgressBar
                 } else {
-                    bindingSearch.sfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+                    bindingSearch.sfProgressBar.visibility =
+                        View.GONE // Nasconde la ProgressBar
                 }
             }
 
@@ -72,7 +78,7 @@ class SearchFragment : Fragment() {
                 // Update the UI
                 if (newSearchList != null) {
                     searchList = newSearchList
-                    movieAdapter = MovieAdapter(searchList){ movie ->
+                    movieAdapter = MovieAdapter(searchList) { movie ->
                         val action =
                             SearchFragmentDirections.actionSearchFragmentToDetailsFragment(movie.imdbID)
                         findNavController().navigate(action)
@@ -94,7 +100,8 @@ class SearchFragment : Fragment() {
                 MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             recyclerView.addItemDecoration(divider)
 
-            bindingSearch.sfSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            bindingSearch.sfSearchBar.setOnQueryTextListener(object :
+                SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     movieAdapter?.getFilter()?.filter(query)
                     return true
@@ -109,13 +116,6 @@ class SearchFragment : Fragment() {
         }
 
 
-    }
-
-    fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
     }
 
 }

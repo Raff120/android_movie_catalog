@@ -1,7 +1,6 @@
 package it.step.moviecatalog.fragment
 
-import android.content.Context
-import android.net.ConnectivityManager
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.adapter.MovieAdapter
 import it.step.moviecatalog.databinding.FragmentHomeMovieBinding
@@ -26,18 +26,18 @@ class HomeMovieFragment : Fragment() {
     private var moviesList: List<Movie> = emptyList()
     private lateinit var bindingHomeMovies: FragmentHomeMovieBinding
     private lateinit var view: View
+    private lateinit var mainActivity : Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        if (isNetworkConnected(requireContext())) {
+        mainActivity= requireActivity() as MainActivity
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.initMovieList()
 
@@ -47,20 +47,21 @@ class HomeMovieFragment : Fragment() {
         } else {
             view = inflater.inflate(R.layout.no_connection_layout, container, false)
         }
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (isNetworkConnected(requireContext())) {
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
                 if (isLoading) {
-                    bindingHomeMovies.hmfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+                    bindingHomeMovies.hmfProgressBar.visibility =
+                        View.VISIBLE // Mostra la ProgressBar
                 } else {
-                    bindingHomeMovies.hmfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+                    bindingHomeMovies.hmfProgressBar.visibility =
+                        View.GONE // Nasconde la ProgressBar
                 }
             }
 
@@ -71,8 +72,9 @@ class HomeMovieFragment : Fragment() {
                 // Update the UI
                 if (newMovieList != null) {
                     moviesList = newMovieList
-                    movieAdapter = MovieAdapter(moviesList){ movie ->
-                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movie.imdbID
+                    movieAdapter = MovieAdapter(moviesList) { movie ->
+                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                            movie.imdbID
                         )
                         findNavController().navigate(action)
                     }
@@ -93,15 +95,6 @@ class HomeMovieFragment : Fragment() {
                 MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             recyclerView.addItemDecoration(divider)
         }
-
-
-    }
-
-    fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
     }
 
 
