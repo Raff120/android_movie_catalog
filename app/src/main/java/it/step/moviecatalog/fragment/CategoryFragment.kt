@@ -121,8 +121,6 @@ class CategoryFragment : Fragment() {
             }
         }
 
-        // Osserva la LiveData per il genere selezionato
-//            movieViewModel.findByGenre(genre)
         movieViewModel.genreMovies.observe(viewLifecycleOwner, movieListObserver)
 
         val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
