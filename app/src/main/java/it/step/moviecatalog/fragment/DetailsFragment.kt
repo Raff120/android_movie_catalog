@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.databinding.FragmentDetailsBinding
@@ -43,7 +44,9 @@ class DetailsFragment : Fragment() {
             val movieObserver = Observer<Movie?> { newMovie ->
                 // Update the UI
                 if (newMovie != null) {
-                    bindingDetails.imPosterDetails.load(newMovie.poster)
+                    bindingDetails.imPosterDetails.load(newMovie.poster){
+                        transformations(RoundedCornersTransformation(30F))
+                    }
                     bindingDetails.titleDetails.text = newMovie.title
                     bindingDetails.plotDetails.text = newMovie.plot
                     bindingDetails.listActorsDetails.text = newMovie.actors
