@@ -1,5 +1,6 @@
 package it.step.moviecatalog.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.adapter.MovieAdapter
 import it.step.moviecatalog.databinding.FragmentHomeGameBinding
@@ -26,7 +28,7 @@ class HomeGameFragment : Fragment() {
     private var gamesList: List<Movie> = emptyList()
     private lateinit var bindingHomeGame: FragmentHomeGameBinding
     private lateinit var view: View
-
+    private lateinit var mainActivity: Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,7 +38,8 @@ class HomeGameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (isNetworkConnected(requireContext())) {
+        mainActivity = requireActivity() as MainActivity
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.initGamesList()
 
@@ -53,13 +56,15 @@ class HomeGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (isNetworkConnected(requireContext())) {
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
                 if (isLoading) {
-                    bindingHomeGame.hgfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+                    bindingHomeGame.hgfProgressBar.visibility =
+                        View.VISIBLE // Mostra la ProgressBar
                 } else {
-                    bindingHomeGame.hgfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+                    bindingHomeGame.hgfProgressBar.visibility =
+                        View.GONE // Nasconde la ProgressBar
                 }
             }
 
@@ -71,7 +76,8 @@ class HomeGameFragment : Fragment() {
                 if (newGameList != null) {
                     gamesList = newGameList
                     movieAdapter = MovieAdapter(gamesList) { game ->
-                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(game.imdbID
+                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                            game.imdbID
                         )
                         findNavController().navigate(action)
                     }
@@ -92,13 +98,7 @@ class HomeGameFragment : Fragment() {
                 MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             recyclerView.addItemDecoration(divider)
         }
-    }
 
-    fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
     }
 
 }

@@ -1,5 +1,6 @@
 package it.step.moviecatalog.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.adapter.MovieAdapter
 import it.step.moviecatalog.databinding.FragmentCategoryBinding
@@ -43,6 +45,7 @@ class CategoryFragment : Fragment() {
     private lateinit var bindingCategory: FragmentCategoryBinding
     private lateinit var view: View
     private var selectedGenre: String? = null
+    private lateinit var mainActivity: Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +57,8 @@ class CategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        if (isNetworkConnected(requireContext())) {
+        mainActivity = requireActivity() as MainActivity
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.getAllMoviesByCategories()
 
@@ -71,13 +75,15 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (isNetworkConnected(requireContext())) {
+        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
                 if (isLoading) {
-                    bindingCategory.cfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+                    bindingCategory.cfProgressBar.visibility =
+                        View.VISIBLE // Mostra la ProgressBar
                 } else {
-                    bindingCategory.cfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+                    bindingCategory.cfProgressBar.visibility =
+                        View.GONE // Nasconde la ProgressBar
                 }
             }
 
@@ -108,7 +114,9 @@ class CategoryFragment : Fragment() {
                     moviesList = newMovieList
                     movieAdapter = MovieAdapter(moviesList) { movie ->
                         val action =
-                            CategoryFragmentDirections.actionCategoryFragmentToDetailsFragment(movie.imdbID)
+                            CategoryFragmentDirections.actionCategoryFragmentToDetailsFragment(
+                                movie.imdbID
+                            )
                         findNavController().navigate(action)
                     }
                     val layoutManager = LinearLayoutManager(requireContext())
@@ -133,13 +141,6 @@ class CategoryFragment : Fragment() {
         }
 
 
-    }
-
-    fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
     }
 
 }
