@@ -55,15 +55,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) {
-                bindingSearch.sfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
-            } else {
-                bindingSearch.sfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
-            }
-        }
-
         if (isNetworkConnected(requireContext())) {
+
+            movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                if (isLoading) {
+                    bindingSearch.sfProgressBar.visibility = View.VISIBLE // Mostra la ProgressBar
+                } else {
+                    bindingSearch.sfProgressBar.visibility = View.GONE // Nasconde la ProgressBar
+                }
+            }
+
             val recyclerView: RecyclerView = view.findViewById(R.id.sf_searched_recycler)
 
             // Create the observer which updates the UI.
@@ -92,20 +93,22 @@ class SearchFragment : Fragment() {
             val divider =
                 MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             recyclerView.addItemDecoration(divider)
+
+            bindingSearch.sfSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    movieAdapter?.getFilter()?.filter(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    movieAdapter?.getFilter()?.filter(newText);
+                    return true
+                }
+
+            })
         }
 
-        bindingSearch.sfSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                movieAdapter?.getFilter()?.filter(query)
-                return true
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                movieAdapter?.getFilter()?.filter(newText);
-                return true
-            }
-
-        })
     }
 
     fun isNetworkConnected(context: Context): Boolean {

@@ -15,8 +15,8 @@ class MovieViewModel : ViewModel() {
 
     private var apiService = ApiManager.movieService
     val movie = MutableLiveData<Movie?>(null)
-    val searchedMovies = MutableLiveData<List<Movie>?>(null)
-    val genreMovies = MutableLiveData<List<Movie>?>(null)
+    val searchedMovies = MutableLiveData<List<Movie>?>(emptyList())
+    val genreMovies = MutableLiveData<List<Movie>?>(emptyList())
 
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _isLoading = MutableLiveData(false)
