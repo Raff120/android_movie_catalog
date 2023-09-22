@@ -36,7 +36,7 @@
 
 
     <!--Errors-->
-    <string name="no_connection">Non sei connesso ad internet!</string>
+    <string name="no_connection">Nessuna connessione ad internet</string>
 
     <!--Utils-->
     <string name="empty_list">Lista vuota</string>

@@ -135,9 +135,6 @@ class CategoryFragment : Fragment() {
 //            movieViewModel.findByGenre(genre)
             movieViewModel.genreMovies.observe(viewLifecycleOwner, movieListObserver)
 
-            val divider =
-                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-            recyclerView.addItemDecoration(divider)
         }
 
 

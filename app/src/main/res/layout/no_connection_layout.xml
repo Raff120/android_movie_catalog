@@ -11,10 +11,24 @@
         android:layout_height="wrap_content"
         android:text="@string/no_connection"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message"
         app:layout_constraintVertical_bias="0.5" />
+
+    <ImageView
+        android:id="@+id/message"
+        android:layout_width="166dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toTopOf="@+id/no_connection_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:srcCompat="@drawable/no_connection_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

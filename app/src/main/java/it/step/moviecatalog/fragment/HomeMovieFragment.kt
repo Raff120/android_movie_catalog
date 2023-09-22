@@ -91,9 +91,6 @@ class HomeMovieFragment : Fragment() {
             // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
             movieViewModel.moviesList.observe(viewLifecycleOwner, movieListObserver)
 
-            val divider =
-                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-            recyclerView.addItemDecoration(divider)
         }
     }
 

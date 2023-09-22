@@ -96,10 +96,6 @@ class SearchFragment : Fragment() {
             // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
             movieViewModel.searchedMovies.observe(viewLifecycleOwner, searchListObserver)
 
-            val divider =
-                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-            recyclerView.addItemDecoration(divider)
-
             bindingSearch.sfSearchBar.setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
