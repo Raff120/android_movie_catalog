@@ -21,15 +21,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
            >
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
                 android:orientation="vertical"
                 android:padding="28dp">
 
@@ -43,7 +47,6 @@
                     app:cardCornerRadius="20dp"
                     android:padding="4dp"
                     android:scaleType="fitCenter" />
-
 
                 <TextView
                     android:id="@+id/title_details"
