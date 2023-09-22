@@ -143,9 +143,3 @@ class CategoryFragment : Fragment() {
     }
 
 }
-
-
-
-
-
-
