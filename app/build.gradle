@@ -41,6 +41,9 @@ dependencies {
     def retrofitVersion = "2.9.0"
     def nav_version = "2.7.2"
 
+    //Swipe to Refresh Layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+
     //Coli
     implementation "io.coil-kt:coil:2.4.0"
 
