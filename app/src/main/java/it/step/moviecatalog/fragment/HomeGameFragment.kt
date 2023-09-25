@@ -39,16 +39,12 @@ class HomeGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = requireActivity() as MainActivity
-        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
-            movieViewModel.initGamesList()
+        movieViewModel.initGamesList()
 
-            // Inflate the layout for this fragment
-            bindingHomeGame = FragmentHomeGameBinding.inflate(layoutInflater)
-            view = bindingHomeGame.root
-        } else {
-            view = inflater.inflate(R.layout.no_connection_layout, container, false)
-        }
+        // Inflate the layout for this fragment
+        bindingHomeGame = FragmentHomeGameBinding.inflate(layoutInflater)
+        view = bindingHomeGame.root
 
         return view
     }
@@ -56,44 +52,72 @@ class HomeGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingHomeGame.hgfMessage.text = getString(R.string.no_connection)
+        else bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
 
-            movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                if (isLoading) {
-                    bindingHomeGame.hgfProgressBar.visibility =
-                        View.VISIBLE // Mostra la ProgressBar
-                } else {
-                    bindingHomeGame.hgfProgressBar.visibility =
-                        View.GONE // Nasconde la ProgressBar
-                }
+        bindingHomeGame.hgfSwipeRefreshLayout.setOnRefreshListener {
+            if((mainActivity as MainActivity).isNetworkConnected(requireContext())){
+                bindingHomeGame.hgfRecyclerLayout.visibility = View.VISIBLE
+                bindingHomeGame.hgfErrorLayout.visibility = View.GONE
+                bindingHomeGame.hgfMessage.text = ""
+                movieViewModel.initGamesList()
+            } else {
+                bindingHomeGame.hgfErrorLayout.visibility = View.VISIBLE
+                bindingHomeGame.hgfRecyclerLayout.visibility = View.GONE
+                bindingHomeGame.hgfMessage.text = getString(R.string.no_connection)
             }
-
-            val recyclerView: RecyclerView = view.findViewById(R.id.hgf_all_games_recycler)
-
-            // Create the observer which updates the UI.
-            val gameListObserver = Observer<List<Movie>?> { newGameList ->
-                // Update the UI
-                if (newGameList != null) {
-                    gamesList = newGameList
-                    movieAdapter = MovieAdapter(gamesList) { game ->
-                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                            game.imdbID
-                        )
-                        findNavController().navigate(action)
-                    }
-                    val layoutManager = LinearLayoutManager(requireContext())
-                    recyclerView.layoutManager = layoutManager
-                    recyclerView.adapter = movieAdapter
-
-                    if (newGameList.isEmpty()) bindingHomeGame.hgfMessage.text =
-                        getString(R.string.empty_list)
-                    else bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
-                }
-            }
-
-            // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-            movieViewModel.gamesList.observe(viewLifecycleOwner, gameListObserver)
+            bindingHomeGame.hgfSwipeRefreshLayout.isRefreshing = false
         }
+
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingHomeGame.hgfProgressBar.visibility =
+                    View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingHomeGame.hgfProgressBar.visibility =
+                    View.GONE // Nasconde la ProgressBar
+            }
+        }
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.hgf_all_games_recycler)
+
+        // Create the observer which updates the UI.
+        val gameListObserver = Observer<List<Movie>?> { newGameList ->
+            // Update the UI
+            if (newGameList != null) {
+                gamesList = newGameList
+                movieAdapter = MovieAdapter(gamesList) { game ->
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                        game.imdbID
+                    )
+                    findNavController().navigate(action)
+                }
+                val layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.layoutManager = layoutManager
+                recyclerView.adapter = movieAdapter
+
+//                if (newGameList.isEmpty()) bindingHomeGame.hgfMessage.text =
+//                    getString(R.string.empty_list)
+//                else bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
+            }
+        }
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        movieViewModel.gamesList.observe(viewLifecycleOwner, gameListObserver)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingHomeGame.hgfMessage.text = getString(R.string.no_connection)
+        else{
+            bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
+            movieViewModel.initGamesList()
+        }
+
+
 
     }
 

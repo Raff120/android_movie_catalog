@@ -42,16 +42,12 @@ class SearchFragment : Fragment() {
     ): View? {
 
         mainActivity = requireActivity() as MainActivity
-        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
-            movieViewModel.initSearchList()
+        movieViewModel.initSearchList()
 
-            // Inflate the layout for this fragment
-            bindingSearch = FragmentSearchBinding.inflate(layoutInflater)
-            view = bindingSearch.root
-        } else {
-            view = inflater.inflate(R.layout.no_connection_layout, container, false)
-        }
+        // Inflate the layout for this fragment
+        bindingSearch = FragmentSearchBinding.inflate(layoutInflater)
+        view = bindingSearch.root
 
         return view
     }
@@ -59,59 +55,85 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingSearch.sfMessage.text = getString(R.string.no_connection)
+        else bindingSearch.sfMessage.text = getString(R.string.empty_string)
 
-            movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                if (isLoading) {
-                    bindingSearch.sfProgressBar.visibility =
-                        View.VISIBLE // Mostra la ProgressBar
-                } else {
-                    bindingSearch.sfProgressBar.visibility =
-                        View.GONE // Nasconde la ProgressBar
-                }
+        bindingSearch.sfSwipeRefreshLayout.setOnRefreshListener {
+            if((mainActivity as MainActivity).isNetworkConnected(requireContext())){
+                bindingSearch.sfRecyclerLayout.visibility = View.VISIBLE
+                bindingSearch.sfErrorLayout.visibility = View.GONE
+                bindingSearch.sfMessage.text = ""
+                movieViewModel.initSearchList()
+            } else {
+                bindingSearch.sfErrorLayout.visibility = View.VISIBLE
+                bindingSearch.sfRecyclerLayout.visibility = View.GONE
+                bindingSearch.sfMessage.text = getString(R.string.no_connection)
             }
-
-            val recyclerView: RecyclerView = view.findViewById(R.id.sf_searched_recycler)
-
-            // Create the observer which updates the UI.
-            val searchListObserver = Observer<List<Movie>?> { newSearchList ->
-                // Update the UI
-                if (newSearchList != null) {
-                    searchList = newSearchList
-                    movieAdapter = MovieAdapter(searchList) { movie ->
-                        val action =
-                            SearchFragmentDirections.actionSearchFragmentToDetailsFragment(movie.imdbID)
-                        findNavController().navigate(action)
-                    }
-                    val layoutManager = LinearLayoutManager(requireContext())
-                    recyclerView.layoutManager = layoutManager
-                    recyclerView.adapter = movieAdapter
-
-                    if (newSearchList.isEmpty()) bindingSearch.sfMessage.text =
-                        getString(R.string.empty_list)
-                    else bindingSearch.sfMessage.text = getString(R.string.empty_string)
-                }
-            }
-
-            // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-            movieViewModel.searchedMovies.observe(viewLifecycleOwner, searchListObserver)
-
-            bindingSearch.sfSearchBar.setOnQueryTextListener(object :
-                SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    movieAdapter?.getFilter()?.filter(query)
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    movieAdapter?.getFilter()?.filter(newText);
-                    return true
-                }
-
-            })
+            bindingSearch.sfSwipeRefreshLayout.isRefreshing = false
         }
 
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingSearch.sfProgressBar.visibility =
+                    View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingSearch.sfProgressBar.visibility =
+                    View.GONE // Nasconde la ProgressBar
+            }
+        }
 
+        val recyclerView: RecyclerView = view.findViewById(R.id.sf_searched_recycler)
+
+        // Create the observer which updates the UI.
+        val searchListObserver = Observer<List<Movie>?> { newSearchList ->
+            // Update the UI
+            if (newSearchList != null) {
+                searchList = newSearchList
+                movieAdapter = MovieAdapter(searchList) { movie ->
+                    val action =
+                        SearchFragmentDirections.actionSearchFragmentToDetailsFragment(movie.imdbID)
+                    findNavController().navigate(action)
+                }
+                val layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.layoutManager = layoutManager
+                recyclerView.adapter = movieAdapter
+
+                if (newSearchList.isEmpty()) bindingSearch.sfMessage.text =
+                    getString(R.string.empty_list)
+                else bindingSearch.sfMessage.text = getString(R.string.empty_string)
+            }
+        }
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        movieViewModel.searchedMovies.observe(viewLifecycleOwner, searchListObserver)
+
+        bindingSearch.sfSearchBar.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                movieAdapter?.getFilter()?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                movieAdapter?.getFilter()?.filter(newText);
+                return true
+            }
+
+        })
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingSearch.sfMessage.text = getString(R.string.no_connection)
+        else{
+            bindingSearch.sfMessage.text = getString(R.string.empty_string)
+            movieViewModel.initSearchList()
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class HomeSeriesFragment : Fragment() {
     private var seriesList: List<Movie> = emptyList()
     private lateinit var bindingHomeSeries: FragmentHomeSeriesBinding
     private lateinit var view: View
-    private lateinit var mainActivity : Activity
+    private lateinit var mainActivity: Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,19 +40,13 @@ class HomeSeriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mainActivity= requireActivity() as MainActivity
-            if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+        mainActivity = requireActivity() as MainActivity
 
+        movieViewModel.initSeriesList()
 
-                movieViewModel.initSeriesList()
-
-
-                // Inflate the layout for this fragment
-                bindingHomeSeries = FragmentHomeSeriesBinding.inflate(layoutInflater)
-                view = bindingHomeSeries.root
-            } else {
-                view = inflater.inflate(R.layout.no_connection_layout, container, false)
-            }
+        // Inflate the layout for this fragment
+        bindingHomeSeries = FragmentHomeSeriesBinding.inflate(layoutInflater)
+        view = bindingHomeSeries.root
 
         return view
     }
@@ -59,45 +54,74 @@ class HomeSeriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingHomeSeries.hsfMessage.text = getString(R.string.no_connection)
+        else bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
+
+        bindingHomeSeries.hsfSwipeRefreshLayout.setOnRefreshListener {
             if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
-
-                movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                    if (isLoading) {
-                        bindingHomeSeries.hsfProgressBar.visibility =
-                            View.VISIBLE // Mostra la ProgressBar
-                    } else {
-                        bindingHomeSeries.hsfProgressBar.visibility =
-                            View.GONE // Nasconde la ProgressBar
-                    }
-                }
-
-                val recyclerView: RecyclerView = view.findViewById(R.id.hsf_all_series_recycler)
-
-                // Create the observer which updates the UI.
-                val seriesListObserver = Observer<List<Movie>?> { newSeriesList ->
-                    // Update the UI
-                    if (newSeriesList != null) {
-                        seriesList = newSeriesList
-                        movieAdapter = MovieAdapter(seriesList) { movie ->
-                            val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                                movie.imdbID
-                            )
-                            findNavController().navigate(action)
-                        }
-                        val layoutManager = LinearLayoutManager(requireContext())
-                        recyclerView.layoutManager = layoutManager
-                        recyclerView.adapter = movieAdapter
-
-                        if (newSeriesList.isEmpty()) bindingHomeSeries.hsfMessage.text =
-                            getString(R.string.empty_list)
-                        else bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
-                    }
-                }
-
-                // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-                movieViewModel.seriesList.observe(viewLifecycleOwner, seriesListObserver)
-
+                bindingHomeSeries.hsfRecyclerLayout.visibility = View.VISIBLE
+                bindingHomeSeries.hsfErrorLayout.visibility = View.GONE
+                bindingHomeSeries.hsfMessage.text = ""
+                movieViewModel.initSeriesList()
+            } else {
+                bindingHomeSeries.hsfErrorLayout.visibility = View.VISIBLE
+                bindingHomeSeries.hsfRecyclerLayout.visibility = View.GONE
+                bindingHomeSeries.hsfMessage.text = getString(R.string.no_connection)
             }
+            bindingHomeSeries.hsfSwipeRefreshLayout.isRefreshing = false
+        }
+
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingHomeSeries.hsfProgressBar.visibility =
+                    View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingHomeSeries.hsfProgressBar.visibility =
+                    View.GONE // Nasconde la ProgressBar
+            }
+        }
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.hsf_all_series_recycler)
+
+        // Create the observer which updates the UI.
+        val seriesListObserver = Observer<List<Movie>?> { newSeriesList ->
+            // Update the UI
+            if (newSeriesList != null) {
+                seriesList = newSeriesList
+                movieAdapter = MovieAdapter(seriesList) { movie ->
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                        movie.imdbID
+                    )
+                    findNavController().navigate(action)
+                }
+                val layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.layoutManager = layoutManager
+                recyclerView.adapter = movieAdapter
+
+//                if (newSeriesList.isEmpty()) bindingHomeSeries.hsfMessage.text =
+//                    getString(R.string.empty_list)
+//                else bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
+            }
+        }
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        movieViewModel.seriesList.observe(viewLifecycleOwner, seriesListObserver)
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingHomeSeries.hsfMessage.text = getString(R.string.no_connection)
+        else{
+            bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
+            movieViewModel.initSeriesList()
+        }
+
+
+
+    }
+
 
 }
