@@ -107,23 +107,34 @@ class CategoryFragment : Fragment() {
             }
 
 
+            val validChipId = setOf(
+                R.id.chip4, R.id.chip3, R.id.chip, R.id.chip2, R.id.chip6,
+                R.id.chip8, R.id.chip9, R.id.chip10, R.id.chip11, R.id.chip12,
+                R.id.chip15, R.id.chip17
+            )
+
+            var selectedChipId: Int = R.id.chip4
+            //Gestione Selezione Chip non è possibile deselezionare una chip selezionata
             bindingCategory.chipGroup.setOnCheckedChangeListener { group, checkedId ->
-                when (checkedId) {
-                    R.id.chip4 -> movieViewModel.getAllMoviesByCategories()
-                    R.id.chip3 -> movieViewModel.findByGenre("action")
-                    R.id.chip -> movieViewModel.findByGenre("Adventure")
-                    R.id.chip2 -> movieViewModel.findByGenre("Animation")
-                    R.id.chip6 -> movieViewModel.findByGenre("Crime")
-                    R.id.chip8 -> movieViewModel.findByGenre("Comedy")
-                    R.id.chip9 -> movieViewModel.findByGenre("Drama")
-                    R.id.chip10 -> movieViewModel.findByGenre("Family")
-                    R.id.chip11 -> movieViewModel.findByGenre("Fantasy")
-                    R.id.chip12 -> movieViewModel.findByGenre("History")
-                    R.id.chip15 -> movieViewModel.findByGenre("Short")
-                    R.id.chip17 -> movieViewModel.findByGenre("Thriller")
-
+                if (!validChipId.contains(checkedId)) {
+                    group.check(selectedChipId)
+                } else {
+                    when (checkedId) {
+                        R.id.chip4 -> movieViewModel.getAllMoviesByCategories()
+                        R.id.chip3 -> movieViewModel.findByGenre("action")
+                        R.id.chip -> movieViewModel.findByGenre("Adventure")
+                        R.id.chip2 -> movieViewModel.findByGenre("Animation")
+                        R.id.chip6 -> movieViewModel.findByGenre("Crime")
+                        R.id.chip8 -> movieViewModel.findByGenre("Comedy")
+                        R.id.chip9 -> movieViewModel.findByGenre("Drama")
+                        R.id.chip10 -> movieViewModel.findByGenre("Family")
+                        R.id.chip11 -> movieViewModel.findByGenre("Fantasy")
+                        R.id.chip12 -> movieViewModel.findByGenre("History")
+                        R.id.chip15 -> movieViewModel.findByGenre("Short")
+                        R.id.chip17 -> movieViewModel.findByGenre("Thriller")
+                    }
+                    selectedChipId = checkedId
                 }
-
             }
             val recyclerView: RecyclerView = bindingCategory.cfAllmovieRecycle
 
