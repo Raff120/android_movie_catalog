@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -75,6 +76,8 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
             movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -86,6 +89,23 @@ class CategoryFragment : Fragment() {
                         View.GONE // Nasconde la ProgressBar
                 }
             }
+            val sortMoviesAlphabeticallyAZ = view.findViewById<Button>(R.id.sortAZButton)
+
+            sortMoviesAlphabeticallyAZ.setOnClickListener {
+                movieAdapter.sortMoviesAlphabeticallyAZ()
+            }
+
+            var isAscendingOrder = true
+
+            sortMoviesAlphabeticallyAZ.setOnClickListener {
+                if (isAscendingOrder) {
+                    movieAdapter.sortMoviesAlphabeticallyAZ()
+                } else {
+                    movieAdapter.sortMoviesAlphabeticallyZA()
+                }
+                isAscendingOrder = !isAscendingOrder
+            }
+
 
             bindingCategory.chipGroup.setOnCheckedChangeListener { group, checkedId ->
                 when (checkedId) {

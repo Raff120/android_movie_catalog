@@ -95,4 +95,14 @@ class MovieAdapter(
         return newString
     }
 
+    fun sortMoviesAlphabeticallyAZ() {
+        data = data.sortedBy { it.title }
+        notifyDataSetChanged()
+    }
+
+    fun sortMoviesAlphabeticallyZA() {
+        data = data.sortedByDescending { it.title }
+        notifyDataSetChanged()
+    }
+
 }
