@@ -2,6 +2,7 @@ package it.step.moviecatalog.fragment
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,23 +38,35 @@ class HomeMovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity= requireActivity() as MainActivity
-        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
 
-            movieViewModel.initMovieList()
+        movieViewModel.initMovieList()
 
-            // Inflate the layout for this fragment
-            bindingHomeMovies = FragmentHomeMovieBinding.inflate(layoutInflater)
-            view = bindingHomeMovies.root
-        } else {
-            view = inflater.inflate(R.layout.no_connection_layout, container, false)
-        }
+        // Inflate the layout for this fragment
+        bindingHomeMovies = FragmentHomeMovieBinding.inflate(layoutInflater)
+        view = bindingHomeMovies.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
+        else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
+
+        bindingHomeMovies.hmfSwipeRefreshLayout.setOnRefreshListener {
+            if((mainActivity as MainActivity).isNetworkConnected(requireContext())){
+                bindingHomeMovies.hmfRecyclerLayout.visibility = View.VISIBLE
+                bindingHomeMovies.hmfErrorLayout.visibility = View.GONE
+                bindingHomeMovies.hmfMessage.text = ""
+                movieViewModel.initMovieList()
+            } else {
+                bindingHomeMovies.hmfErrorLayout.visibility = View.VISIBLE
+                bindingHomeMovies.hmfRecyclerLayout.visibility = View.GONE
+                bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
+            }
+            bindingHomeMovies.hmfSwipeRefreshLayout.isRefreshing = false
+        }
 
             movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
                 if (isLoading) {
@@ -82,16 +95,28 @@ class HomeMovieFragment : Fragment() {
                     recyclerView.layoutManager = layoutManager
                     recyclerView.adapter = movieAdapter
 
-                    if (newMovieList.isEmpty()) bindingHomeMovies.hmfMessage.text =
-                        getString(R.string.empty_list)
-                    else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
+//                    if (newMovieList.isEmpty()) bindingHomeMovies.hmfMessage.text =
+//                        getString(R.string.empty_list)
+//                    else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
                 }
             }
 
             // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
             movieViewModel.moviesList.observe(viewLifecycleOwner, movieListObserver)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+            bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
+        else{
+            bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
+            movieViewModel.initMovieList()
         }
+
+
+
     }
 
 
