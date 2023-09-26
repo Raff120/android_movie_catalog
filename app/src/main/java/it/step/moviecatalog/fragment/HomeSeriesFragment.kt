@@ -82,6 +82,24 @@ class HomeSeriesFragment : Fragment() {
             }
         }
 
+        bindingHomeSeries.msfToggleButton?.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.msf_sortAZButton -> {
+                        movieAdapter.sortMoviesAlphabeticallyAZ()
+                    }
+
+                    R.id.msf_sortZAButton -> {
+                        movieAdapter.sortMoviesAlphabeticallyZA()
+                    }
+                }
+            } else {
+                if (group.checkedButtonId == View.NO_ID) {
+                    movieViewModel.initSeriesList()
+                }
+            }
+        }
+
         val recyclerView: RecyclerView = view.findViewById(R.id.hsf_all_series_recycler)
 
         // Create the observer which updates the UI.

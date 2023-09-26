@@ -89,22 +89,7 @@ class CategoryFragment : Fragment() {
                         View.GONE // Nasconde la ProgressBar
                 }
             }
-            val sortMoviesAlphabeticallyAZ = view.findViewById<Button>(R.id.sortAZButton)
 
-            sortMoviesAlphabeticallyAZ.setOnClickListener {
-                movieAdapter.sortMoviesAlphabeticallyAZ()
-            }
-
-            var isAscendingOrder = true
-
-            sortMoviesAlphabeticallyAZ.setOnClickListener {
-                if (isAscendingOrder) {
-                    movieAdapter.sortMoviesAlphabeticallyAZ()
-                } else {
-                    movieAdapter.sortMoviesAlphabeticallyZA()
-                }
-                isAscendingOrder = !isAscendingOrder
-            }
 
 
             val validChipId = setOf(

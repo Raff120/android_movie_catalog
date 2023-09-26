@@ -132,7 +132,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sortAZButton"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
         app:layout_constraintVertical_bias="0.0"
 
         />
@@ -164,18 +164,6 @@
         app:layout_constraintTop_toBottomOf="@+id/cf_allmovie_recycle"
         app:layout_constraintVertical_bias="0.5" />
 
-    <Button
-        android:id="@+id/sortAZButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="A → Z"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.969"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
-        app:layout_constraintVertical_bias="0.012" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

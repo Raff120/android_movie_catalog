@@ -80,6 +80,24 @@ class HomeGameFragment : Fragment() {
             }
         }
 
+        bindingHomeGame.mgfToggleButton?.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.mgf_sortAZButton -> {
+                        movieAdapter.sortMoviesAlphabeticallyAZ()
+                    }
+
+                    R.id.mgf_sortZAButton -> {
+                        movieAdapter.sortMoviesAlphabeticallyZA()
+                    }
+                }
+            } else {
+                if (group.checkedButtonId == View.NO_ID) {
+                    movieViewModel.initGamesList()
+                }
+            }
+        }
+
         val recyclerView: RecyclerView = view.findViewById(R.id.hgf_all_games_recycler)
 
         // Create the observer which updates the UI.

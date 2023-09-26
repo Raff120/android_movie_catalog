@@ -78,6 +78,24 @@ class HomeMovieFragment : Fragment() {
                 }
             }
 
+        bindingHomeMovies.mhfToggleButton?.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.mhf_sortAZButton -> {
+                        movieAdapter.sortMoviesAlphabeticallyAZ()
+                    }
+
+                    R.id.mhf_sortZAButton -> {
+                        movieAdapter.sortMoviesAlphabeticallyZA()
+                    }
+                }
+            } else {
+                if (group.checkedButtonId == View.NO_ID) {
+                    movieViewModel.initMovieList()
+                }
+            }
+        }
+
             val recyclerView: RecyclerView = view.findViewById(R.id.hmf_all_movies_recycler)
 
             // Create the observer which updates the UI.
