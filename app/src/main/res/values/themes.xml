@@ -18,5 +18,7 @@
 
     </style>
 
+
     <style name="Theme.MovieCatalog" parent="Base.Theme.MovieCatalog" />
+
 </resources>

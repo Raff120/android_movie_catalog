@@ -3,7 +3,6 @@
     <!-- Sfondo trasparente -->
     <item android:drawable="@android:color/transparent" />
 
-    <!-- Bordo colorato -->
     <item>
         <shape android:shape="rectangle">
             <stroke

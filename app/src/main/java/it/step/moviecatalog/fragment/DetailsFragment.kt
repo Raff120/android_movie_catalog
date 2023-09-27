@@ -46,10 +46,7 @@ class DetailsFragment : Fragment() {
             val movieObserver = Observer<Movie?> { newMovie ->
                 // Update the UI
                 if (newMovie != null) {
-                    bindingDetails.imPosterDetails.load(newMovie.poster){
-                        transformations(RoundedCornersTransformation(30F))
-                    }
-
+                    bindingDetails.imPosterDetails.load(newMovie.poster)
                     bindingDetails.titleDetails.text = newMovie.title
                     val ratingValue = newMovie.imdbrating?.toFloatOrNull()
                     if (ratingValue != null) {
