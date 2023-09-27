@@ -84,9 +84,7 @@ class MovieAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.cardTitle.text = data[position].title
         viewHolder.cardDescription.text = data[position].plot
-        viewHolder.cardImage.load(data[position].poster){
-            transformations(RoundedCornersTransformation(30F))
-        }
+        viewHolder.cardImage.load(data[position].poster)
         viewHolder.bind(data[position])
     }
 
