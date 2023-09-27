@@ -9,4 +9,5 @@
     <color name="colorPrimaryDark">#4E0D3A</color>
     <color name="colorStarDetails">#F9AA33</color>
     <color name="chipgrey">#888888</color>
+    <color name="primary_light">#E8DEF8</color>
 </resources>

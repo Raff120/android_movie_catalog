@@ -113,6 +113,7 @@ class HomeMovieFragment : Fragment() {
                     recyclerView.layoutManager = layoutManager
                     recyclerView.adapter = movieAdapter
 
+
 //                    if (newMovieList.isEmpty()) bindingHomeMovies.hmfMessage.text =
 //                        getString(R.string.empty_list)
 //                    else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
