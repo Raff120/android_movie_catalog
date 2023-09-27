@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import it.step.moviecatalog.R
 import it.step.moviecatalog.model.Movie
 import java.util.Locale
@@ -81,19 +82,21 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.cardTitle.text = abbreviateString(data[position].title,20)
-        viewHolder.cardDescription.text = data[position].plot?.let { abbreviateString(it,80) }
-        viewHolder.cardImage.load(data[position].poster)
+        viewHolder.cardTitle.text = data[position].title
+        viewHolder.cardDescription.text = data[position].plot
+        viewHolder.cardImage.load(data[position].poster){
+            transformations(RoundedCornersTransformation(30F))
+        }
         viewHolder.bind(data[position])
     }
 
-    private fun abbreviateString(string: String, dim : Int) : String{
-        var newString = string
-        if(string.length >= dim){
-            newString = string.substring(0, dim - 3) + "..."
-        }
-        return newString
-    }
+//    private fun abbreviateString(string: String, dim : Int) : String{
+//        var newString = string
+//        if(string.length >= dim){
+//            newString = string.substring(0, dim - 3) + "..."
+//        }
+//        return newString
+//    }
 
     fun sortMoviesAlphabeticallyAZ() {
         data = data.sortedBy { it.title }
