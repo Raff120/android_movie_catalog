@@ -8,7 +8,7 @@
         android:id="@+id/cerca"
         android:title="@string/search"
         android:titleTextAppearance="@font/regular"
-        android:icon="@drawable/ic_movies_24"
+        android:icon="@drawable/ic_search_24"
         />
 
 
