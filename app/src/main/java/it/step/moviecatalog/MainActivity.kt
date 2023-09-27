@@ -53,12 +53,13 @@ class MainActivity : AppCompatActivity() {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_24)
                 topAppBar.setNavigationOnClickListener {
                     navController.navigateUp()
-                    topAppBar.setNavigationOnClickListener {
-                        drawerLayout.openDrawer(navigationView)
-                    }
+
                 }
             } else {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_hamburger)
+                topAppBar.setNavigationOnClickListener {
+                    drawerLayout.openDrawer(navigationView)
+                }
             }
         }
 
