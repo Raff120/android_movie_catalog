@@ -29,6 +29,7 @@ class HomeGameFragment : Fragment() {
     private lateinit var bindingHomeGame: FragmentHomeGameBinding
     private lateinit var view: View
     private lateinit var mainActivity: Activity
+    private var isButtonGroupVisible = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -114,6 +115,31 @@ class HomeGameFragment : Fragment() {
                 val layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.layoutManager = layoutManager
                 recyclerView.adapter = movieAdapter
+                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        // Qui puoi gestire lo stato di scorrimento, ad esempio quando inizia o finisce lo scorrimento.
+                    }
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        // Qui puoi gestire lo scorrimento effettivo e decidere se mostrare o nascondere il Button Group.
+
+                        if (dy > 100) {
+                            // Scorrimento verso il basso, nascondi il Button Group solo se non è già nascosto.
+                            if (isButtonGroupVisible) {
+                                bindingHomeGame.mgfToggleButton.visibility = View.GONE
+                                isButtonGroupVisible = false
+                            }
+                        } else if (dy < 0) {
+                            // Scorrimento verso l'alto, mostra il Button Group solo se è nascosto.
+                            if (!isButtonGroupVisible) {
+                                bindingHomeGame.mgfToggleButton.visibility = View.VISIBLE
+                                isButtonGroupVisible = true
+                            }
+                        }
+                    }
+                })
 
 //                if (newGameList.isEmpty()) bindingHomeGame.hgfMessage.text =
 //                    getString(R.string.empty_list)
