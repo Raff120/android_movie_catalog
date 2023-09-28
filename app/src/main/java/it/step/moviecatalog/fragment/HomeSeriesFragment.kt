@@ -60,6 +60,8 @@ class HomeSeriesFragment : Fragment() {
         else bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
 
         bindingHomeSeries.hsfSwipeRefreshLayout.setOnRefreshListener {
+            bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
+
             if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
                 bindingHomeSeries.hsfRecyclerLayout.visibility = View.VISIBLE
                 bindingHomeSeries.hsfErrorLayout.visibility = View.GONE
@@ -80,6 +82,11 @@ class HomeSeriesFragment : Fragment() {
             } else {
                 bindingHomeSeries.hsfProgressBar.visibility =
                     View.GONE // Nasconde la ProgressBar
+                if (seriesList.isEmpty()){
+                    bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_list)
+                } else {
+                    bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
+                }
             }
         }
 
@@ -105,6 +112,13 @@ class HomeSeriesFragment : Fragment() {
 
         // Create the observer which updates the UI.
         val seriesListObserver = Observer<List<Movie>?> { newSeriesList ->
+
+            if (newSeriesList!=null && newSeriesList.isEmpty()){
+                bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_list)
+            } else {
+                bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
+            }
+
             // Update the UI
             if (newSeriesList != null) {
                 seriesList = newSeriesList
@@ -143,9 +157,6 @@ class HomeSeriesFragment : Fragment() {
                     }
                 })
 
-//                if (newSeriesList.isEmpty()) bindingHomeSeries.hsfMessage.text =
-//                    getString(R.string.empty_list)
-//                else bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
             }
         }
 

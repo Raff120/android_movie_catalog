@@ -59,8 +59,8 @@
                 android:id="@+id/hmf_all_movies_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="50dp"
-                android:clipToPadding = "false" />
+                android:clipToPadding="false"
+                android:paddingTop="50dp" />
 
             <ProgressBar
                 android:id="@+id/hmf_progress_bar"
@@ -68,6 +68,17 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <TextView
+                android:id="@+id/hmf_void_list_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

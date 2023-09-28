@@ -41,7 +41,7 @@
 
 
     <!--Utils-->
-    <string name="empty_list">Lista vuota</string>
+    <string name="empty_list">Ops! C\'è stato un problema, riprova più tardi</string>
     <string name="empty_string"></string>
 
 

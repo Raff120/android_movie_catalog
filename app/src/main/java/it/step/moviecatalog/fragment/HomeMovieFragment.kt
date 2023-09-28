@@ -27,7 +27,7 @@ class HomeMovieFragment : Fragment() {
     private var moviesList: List<Movie> = emptyList()
     private lateinit var bindingHomeMovies: FragmentHomeMovieBinding
     private lateinit var view: View
-    private lateinit var mainActivity : Activity
+    private lateinit var mainActivity: Activity
     private var isButtonGroupVisible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class HomeMovieFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mainActivity= requireActivity() as MainActivity
+        mainActivity = requireActivity() as MainActivity
 
         movieViewModel.initMovieList()
 
@@ -51,12 +51,14 @@ class HomeMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+        if (!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
             bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
         else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
 
         bindingHomeMovies.hmfSwipeRefreshLayout.setOnRefreshListener {
-            if((mainActivity as MainActivity).isNetworkConnected(requireContext())){
+            bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
+
+            if ((mainActivity as MainActivity).isNetworkConnected(requireContext())) {
                 bindingHomeMovies.hmfRecyclerLayout.visibility = View.VISIBLE
                 bindingHomeMovies.hmfErrorLayout.visibility = View.GONE
                 bindingHomeMovies.hmfMessage.text = ""
@@ -69,15 +71,20 @@ class HomeMovieFragment : Fragment() {
             bindingHomeMovies.hmfSwipeRefreshLayout.isRefreshing = false
         }
 
-            movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                if (isLoading) {
-                    bindingHomeMovies.hmfProgressBar.visibility =
-                        View.VISIBLE // Mostra la ProgressBar
+        movieViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                bindingHomeMovies.hmfProgressBar.visibility =
+                    View.VISIBLE // Mostra la ProgressBar
+            } else {
+                bindingHomeMovies.hmfProgressBar.visibility =
+                    View.GONE // Nasconde la ProgressBar
+                if (moviesList.isEmpty()){
+                    bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_list)
                 } else {
-                    bindingHomeMovies.hmfProgressBar.visibility =
-                        View.GONE // Nasconde la ProgressBar
+                    bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
                 }
             }
+        }
 
         bindingHomeMovies.mhfToggleButton?.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (isChecked) {
@@ -97,69 +104,71 @@ class HomeMovieFragment : Fragment() {
             }
         }
 
-            val recyclerView: RecyclerView = view.findViewById(R.id.hmf_all_movies_recycler)
+        val recyclerView: RecyclerView = view.findViewById(R.id.hmf_all_movies_recycler)
 
-            // Create the observer which updates the UI.
-            val movieListObserver = Observer<List<Movie>?> { newMovieList ->
-                // Update the UI
-                if (newMovieList != null) {
-                    moviesList = newMovieList
-                    movieAdapter = MovieAdapter(moviesList) { movie ->
-                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                            movie.imdbID
-                        )
-                        findNavController().navigate(action)
-                    }
-                    val layoutManager = LinearLayoutManager(requireContext())
-                    recyclerView.layoutManager = layoutManager
-                    recyclerView.adapter = movieAdapter
-                    recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                            super.onScrollStateChanged(recyclerView, newState)
-                            // Qui puoi gestire lo stato di scorrimento, ad esempio quando inizia o finisce lo scorrimento.
-                        }
+        // Create the observer which updates the UI.
+        val movieListObserver = Observer<List<Movie>?> { newMovieList ->
+            // Update the UI
 
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            super.onScrolled(recyclerView, dx, dy)
-                            // Qui puoi gestire lo scorrimento effettivo e decidere se mostrare o nascondere il Button Group.
-
-                            if (dy > 100) {
-                                // Scorrimento verso il basso, nascondi il Button Group solo se non è già nascosto.
-                                if (isButtonGroupVisible) {
-                                    bindingHomeMovies.mhfToggleButton.visibility = View.GONE
-                                    isButtonGroupVisible = false
-                                }
-                            } else if (dy < 0) {
-                                // Scorrimento verso l'alto, mostra il Button Group solo se è nascosto.
-                                if (!isButtonGroupVisible) {
-                                    bindingHomeMovies.mhfToggleButton.visibility = View.VISIBLE
-                                    isButtonGroupVisible = true
-                                }
-                            }
-                        }
-                    })
-
-
-//                    if (newMovieList.isEmpty()) bindingHomeMovies.hmfMessage.text =
-//                        getString(R.string.empty_list)
-//                    else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
-                }
+            if (newMovieList!=null && newMovieList.isEmpty()){
+                bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_list)
+            } else {
+                bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
             }
 
-            // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-            movieViewModel.moviesList.observe(viewLifecycleOwner, movieListObserver)
+            if (newMovieList != null) {
+                moviesList = newMovieList
+                movieAdapter = MovieAdapter(moviesList) { movie ->
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                        movie.imdbID
+                    )
+                    findNavController().navigate(action)
+                }
+                val layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.layoutManager = layoutManager
+                recyclerView.adapter = movieAdapter
+                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        // Qui puoi gestire lo stato di scorrimento, ad esempio quando inizia o finisce lo scorrimento.
+                    }
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        // Qui puoi gestire lo scorrimento effettivo e decidere se mostrare o nascondere il Button Group.
+
+                        if (dy > 100) {
+                            // Scorrimento verso il basso, nascondi il Button Group solo se non è già nascosto.
+                            if (isButtonGroupVisible) {
+                                bindingHomeMovies.mhfToggleButton.visibility = View.GONE
+                                isButtonGroupVisible = false
+                            }
+                        } else if (dy < 0) {
+                            // Scorrimento verso l'alto, mostra il Button Group solo se è nascosto.
+                            if (!isButtonGroupVisible) {
+                                bindingHomeMovies.mhfToggleButton.visibility = View.VISIBLE
+                                isButtonGroupVisible = true
+                            }
+                        }
+                    }
+                })
+
+            }
+        }
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        movieViewModel.moviesList.observe(viewLifecycleOwner, movieListObserver)
 
     }
 
     override fun onResume() {
         super.onResume()
-        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+        if (!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
             bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
-        else{
+        else {
             bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
             movieViewModel.initMovieList()
         }
-
 
 
     }

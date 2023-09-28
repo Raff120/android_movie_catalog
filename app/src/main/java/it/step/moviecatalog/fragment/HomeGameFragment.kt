@@ -58,6 +58,8 @@ class HomeGameFragment : Fragment() {
         else bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
 
         bindingHomeGame.hgfSwipeRefreshLayout.setOnRefreshListener {
+            bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
+
             if((mainActivity as MainActivity).isNetworkConnected(requireContext())){
                 bindingHomeGame.hgfRecyclerLayout.visibility = View.VISIBLE
                 bindingHomeGame.hgfErrorLayout.visibility = View.GONE
@@ -78,6 +80,11 @@ class HomeGameFragment : Fragment() {
             } else {
                 bindingHomeGame.hgfProgressBar.visibility =
                     View.GONE // Nasconde la ProgressBar
+                if (gamesList.isEmpty()){
+                    bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_list)
+                } else {
+                    bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
+                }
             }
         }
 
@@ -103,6 +110,13 @@ class HomeGameFragment : Fragment() {
 
         // Create the observer which updates the UI.
         val gameListObserver = Observer<List<Movie>?> { newGameList ->
+
+            if (newGameList!=null && newGameList.isEmpty()){
+                bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_list)
+            } else {
+                bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
+            }
+
             // Update the UI
             if (newGameList != null) {
                 gamesList = newGameList
@@ -141,9 +155,6 @@ class HomeGameFragment : Fragment() {
                     }
                 })
 
-//                if (newGameList.isEmpty()) bindingHomeGame.hgfMessage.text =
-//                    getString(R.string.empty_list)
-//                else bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
             }
         }
 

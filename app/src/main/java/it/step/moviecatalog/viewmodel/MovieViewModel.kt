@@ -21,9 +21,9 @@ class MovieViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _isLoading = MutableLiveData(false)
 
-    val moviesList = MutableLiveData<List<Movie>?>(emptyList())
-    val seriesList = MutableLiveData<List<Movie>?>(emptyList())
-    val gamesList = MutableLiveData<List<Movie>?>(emptyList())
+    val moviesList = MutableLiveData<List<Movie>?>(null)
+    val seriesList = MutableLiveData<List<Movie>?>(null)
+    val gamesList = MutableLiveData<List<Movie>?>(null)
 
 
     fun getAllMoviesByCategories() {
