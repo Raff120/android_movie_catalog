@@ -29,6 +29,7 @@ class MovieViewModel : ViewModel() {
     fun getAllMoviesByCategories() {
         _isLoading.value = true
         viewModelScope.launch {
+            try {
             val response = apiService.getAllMovies()
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
@@ -42,27 +43,38 @@ class MovieViewModel : ViewModel() {
                     _isLoading.value = false
                 }
             }
+            }catch (e: Exception){
+                _isLoading.value = false
+            }
+
+
         }
     }
 
     fun findByGenre(genre: String) {
         _isLoading.value = true
         viewModelScope.launch {
-            val response = apiService.findMovieByGenre(genre)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        genreMovies.postValue(response.body())
-                        _isLoading.value = false
+
+            try {
+                val response = apiService.findMovieByGenre(genre)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            genreMovies.postValue(response.body())
+                            _isLoading.value = false
+                        } else {
+                            //TODO
+                            _isLoading.value = false
+                        }
                     } else {
                         //TODO
                         _isLoading.value = false
                     }
-                } else {
-                    //TODO
-                    _isLoading.value = false
                 }
+            }catch (e: Exception){
+                _isLoading.value = false
             }
+
         }
     }
 

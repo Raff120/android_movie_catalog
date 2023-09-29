@@ -81,7 +81,13 @@ class HomeGameFragment : Fragment() {
                 bindingHomeGame.hgfProgressBar.visibility =
                     View.GONE // Nasconde la ProgressBar
                 if (gamesList.isEmpty()){
-                    bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_list)
+                    if(!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+                        bindingHomeGame.hgfMessage.text = getString(R.string.no_connection)
+                        bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
+                    }
+                    else{
+                        bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_list)
+                    }
                 } else {
                     bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
                 }
@@ -112,7 +118,13 @@ class HomeGameFragment : Fragment() {
         val gameListObserver = Observer<List<Movie>?> { newGameList ->
 
             if (newGameList!=null && newGameList.isEmpty()){
-                bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_list)
+                if(!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+                    bindingHomeGame.hgfMessage.text = getString(R.string.no_connection)
+                    bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
+                }
+                else{
+                    bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_list)
+                }
             } else {
                 bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
             }
@@ -165,8 +177,10 @@ class HomeGameFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
             bindingHomeGame.hgfMessage.text = getString(R.string.no_connection)
+            bindingHomeGame.hgfVoidListMessage.text = getString(R.string.empty_string)
+        }
         else{
             bindingHomeGame.hgfMessage.text = getString(R.string.empty_string)
             movieViewModel.initGamesList()

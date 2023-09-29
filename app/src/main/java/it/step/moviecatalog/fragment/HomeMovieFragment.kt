@@ -51,9 +51,12 @@ class HomeMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+        if (!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
             bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
-        else bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
+            bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
+        } else {
+            bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
+        }
 
         bindingHomeMovies.hmfSwipeRefreshLayout.setOnRefreshListener {
             bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
@@ -79,7 +82,12 @@ class HomeMovieFragment : Fragment() {
                 bindingHomeMovies.hmfProgressBar.visibility =
                     View.GONE // Nasconde la ProgressBar
                 if (moviesList.isEmpty()){
-                    bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_list)
+                    if (!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+                        bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
+                        bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
+                    }else{
+                        bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_list)
+                    }
                 } else {
                     bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
                 }
@@ -111,7 +119,12 @@ class HomeMovieFragment : Fragment() {
             // Update the UI
 
             if (newMovieList!=null && newMovieList.isEmpty()){
-                bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_list)
+                if (!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+                    bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
+                    bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
+                }else{
+                    bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_list)
+                }
             } else {
                 bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
             }
@@ -163,9 +176,10 @@ class HomeMovieFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+        if (!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
             bindingHomeMovies.hmfMessage.text = getString(R.string.no_connection)
-        else {
+            bindingHomeMovies.hmfVoidListMessage.text = getString(R.string.empty_string)
+        } else {
             bindingHomeMovies.hmfMessage.text = getString(R.string.empty_string)
             movieViewModel.initMovieList()
         }

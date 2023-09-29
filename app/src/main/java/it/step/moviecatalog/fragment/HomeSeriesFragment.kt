@@ -83,7 +83,13 @@ class HomeSeriesFragment : Fragment() {
                 bindingHomeSeries.hsfProgressBar.visibility =
                     View.GONE // Nasconde la ProgressBar
                 if (seriesList.isEmpty()){
-                    bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_list)
+                    if(!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+                        bindingHomeSeries.hsfMessage.text = getString(R.string.no_connection)
+                        bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
+                    }
+                    else{
+                        bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_list)
+                    }
                 } else {
                     bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
                 }
@@ -114,7 +120,13 @@ class HomeSeriesFragment : Fragment() {
         val seriesListObserver = Observer<List<Movie>?> { newSeriesList ->
 
             if (newSeriesList!=null && newSeriesList.isEmpty()){
-                bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_list)
+                if(!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
+                    bindingHomeSeries.hsfMessage.text = getString(R.string.no_connection)
+                    bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
+                }
+                else{
+                    bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_list)
+                }
             } else {
                 bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
             }
@@ -167,8 +179,10 @@ class HomeSeriesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext()))
+        if(!(mainActivity as MainActivity).isNetworkConnected(requireContext())) {
             bindingHomeSeries.hsfMessage.text = getString(R.string.no_connection)
+            bindingHomeSeries.hsfVoidListMessage.text = getString(R.string.empty_string)
+        }
         else{
             bindingHomeSeries.hsfMessage.text = getString(R.string.empty_string)
             movieViewModel.initSeriesList()
