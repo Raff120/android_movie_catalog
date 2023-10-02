@@ -116,7 +116,12 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                movieAdapter?.getFilter()?.filter(newText);
+                try {
+                    movieAdapter?.getFilter()?.filter(newText);
+                }catch (e: Exception){
+
+                }
+
                 return true
             }
 
