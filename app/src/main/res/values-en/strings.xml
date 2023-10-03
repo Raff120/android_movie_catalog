@@ -18,6 +18,7 @@
     <string name="tab_item_games">Games</string>
 
     <!-- List Chips -->
+    <string name="All">All</string>
     <string name="Action">Action</string>
     <string name="Adventure">Adventure</string>
     <string name="Drama">Drama</string>

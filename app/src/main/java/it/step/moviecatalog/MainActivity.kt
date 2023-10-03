@@ -4,23 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.net.ConnectivityManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.widget.Toolbar  // Importa la Toolbar corretta
-import androidx.compose.runtime.simulateHotReload
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
-import it.step.moviecatalog.fragment.CategoryFragment
 import it.step.moviecatalog.viewmodel.MovieViewModel
 import java.util.Locale
 

@@ -2,7 +2,6 @@ package it.step.moviecatalog.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.adapter.MovieAdapter
