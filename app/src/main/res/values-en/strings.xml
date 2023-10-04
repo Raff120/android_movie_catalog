@@ -50,4 +50,8 @@
     <!--Languages-->
     <string name="italian">Italian</string>
     <string name="english">English</string>
+
+    <!--Settings-->
+    <string name="settings">Settings</string>
+
 </resources>

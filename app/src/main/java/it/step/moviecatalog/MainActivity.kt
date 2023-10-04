@@ -2,6 +2,7 @@ package it.step.moviecatalog
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -42,6 +43,29 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
+
+        val sharedPreferences = getSharedPreferences("language_preferences", Context.MODE_PRIVATE)
+        val sp_editor = sharedPreferences.edit()
+        val app_language = sharedPreferences.getString("app_language", getString(R.string.empty_string))
+        var isLanguageSet = sharedPreferences.getBoolean("isLanguageSet", false)
+
+        if(!isLanguageSet){
+            sp_editor.putBoolean("isLanguageSet", false)
+            sp_editor.apply()
+        }
+
+
+        if(app_language=="it" && isLanguageSet){
+            setAppLanguage(this,"it")
+//            sp_editor.putBoolean("isLanguageSet", true)
+//            sp_editor.apply()
+            recreate()
+        } else if(app_language=="en" && isLanguageSet) {
+            setAppLanguage(this,"en")
+//            sp_editor.putBoolean("isLanguageSet", true)
+//            sp_editor.apply()
+            recreate()
+        }
 
 
 
@@ -86,27 +110,23 @@ class MainActivity : AppCompatActivity() {
 
         topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.italian -> {
+                R.id.settings -> {
+                    navController.navigate(R.id.settingsFragment)
+
 //                    Toast.makeText(this, "Italiano", Toast.LENGTH_LONG).show()
                     // Imposta la lingua italiana
-                    setAppLanguage(this, "it")
+                    //setAppLanguage(this, "it")
                     // Ricarica l'attività per applicare la nuova lingua
-                    recreate()
+                    //recreate()
                     true
                 }
 
-                R.id.english -> {
-//                    Toast.makeText(this, "Inglese", Toast.LENGTH_LONG).show()
-                    // Imposta la lingua inglese
-                    setAppLanguage(this, "en")
-                    // Ricarica l'attività per applicare la nuova lingua
-                    recreate()
-                    true
-                }
 
                 else -> false
             }
         }
+
+
 
 
 //        optionNavigationView.setNavigationItemSelectedListener {
@@ -125,6 +145,23 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 
+    }
+
+    override fun recreate() {
+
+        val sharedPreferences = getSharedPreferences("language_preferences", Context.MODE_PRIVATE)
+        val app_language = sharedPreferences.getString("app_language", getString(R.string.empty_string))
+        var isLanguageSet = sharedPreferences.getBoolean("isLanguageSet", false)
+
+        if(app_language=="it" && isLanguageSet){
+            setAppLanguage(this,"it")
+//            sp_editor.putBoolean("isLanguageSet", true)
+//            sp_editor.apply()
+        } else if(app_language=="en" && isLanguageSet) {
+            setAppLanguage(this,"en")
+//            sp_editor.putBoolean("isLanguageSet", true)
+//            sp_editor.apply()
+        }
     }
 
     fun isNetworkConnected(context: Context): Boolean {
@@ -147,6 +184,16 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.top_app_bar, menu)
         return true
     }
+
+
+    fun exitAndRelaunchApp() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        this?.finish()
+    }
+
+
 
 }
 
