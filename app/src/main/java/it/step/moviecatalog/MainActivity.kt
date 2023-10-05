@@ -1,35 +1,33 @@
 package it.step.moviecatalog
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Menu
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
-import it.step.moviecatalog.viewmodel.MovieViewModel
 import java.util.Locale
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var topAppBar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private lateinit var optionNavigationView: NavigationView
     private lateinit var navController: NavController
-
-    private val movieViewModel: MovieViewModel by viewModels()
-
+    private lateinit var myApp : Application
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         topAppBar = findViewById(R.id.topAppBar)
@@ -44,13 +42,12 @@ class MainActivity : AppCompatActivity() {
         navigationView = findViewById(R.id.navigationView)
 
 
-
         topAppBar.setNavigationOnClickListener {
             drawerLayout.openDrawer(navigationView)
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.categoryFragment || destination.id == R.id.detailsFragment || destination.id == R.id.searchFragment) {
+            if (destination.id == R.id.categoryFragment || destination.id == R.id.detailsFragment || destination.id == R.id.searchFragment || destination.id == R.id.settingsFragment) {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_24)
 
                 topAppBar.setNavigationOnClickListener {
@@ -86,46 +83,18 @@ class MainActivity : AppCompatActivity() {
 
         topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.italian -> {
-//                    Toast.makeText(this, "Italiano", Toast.LENGTH_LONG).show()
-                    // Imposta la lingua italiana
-                    setAppLanguage(this, "it")
-                    // Ricarica l'attività per applicare la nuova lingua
-                    recreate()
+                R.id.settings -> {
+                    navController.navigate(R.id.settingsFragment)
                     true
                 }
 
-                R.id.english -> {
-//                    Toast.makeText(this, "Inglese", Toast.LENGTH_LONG).show()
-                    // Imposta la lingua inglese
-                    setAppLanguage(this, "en")
-                    // Ricarica l'attività per applicare la nuova lingua
-                    recreate()
-                    true
-                }
 
                 else -> false
             }
         }
 
-
-//        optionNavigationView.setNavigationItemSelectedListener {
-//            when (it.itemId) {
-//                R.id.italian -> {
-//                    Toast.makeText(this, "Italiano", Toast.LENGTH_LONG).show()
-//                    true
-//                }
-//
-//                R.id.english -> {
-//                    Toast.makeText(this, "Inglese", Toast.LENGTH_LONG).show()
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
-
     }
+
 
     fun isNetworkConnected(context: Context): Boolean {
         val connectivityManager =
@@ -147,6 +116,16 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.top_app_bar, menu)
         return true
     }
+
+
+    fun exitAndRelaunchApp() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        this?.finish()
+    }
+
+
 
 }
 

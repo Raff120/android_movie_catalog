@@ -19,6 +19,10 @@
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -70,6 +74,10 @@
             android:id="@+id/action_homeMovieFragment2_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="it.step.moviecatalog.fragment.SettingsFragment"
+        android:label="SettingsFragment" />
 
 
 </navigation>

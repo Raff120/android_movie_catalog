@@ -54,4 +54,11 @@
     <!--Languages-->
     <string name="italian">Italiano</string>
     <string name="english">Inglese</string>
+
+
+    <string name="settings">Impostazioni</string>
+    <string name="set_italian">Imposta lingua Italiana</string>
+    <string name="set_english">Imposta lingua Inglese</string>
+    <string name="set_language">Seleziona Lingua</string>
+
 </resources>
