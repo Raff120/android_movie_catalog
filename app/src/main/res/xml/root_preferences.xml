@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="Seleziona Lingua">
+    <PreferenceCategory android:title="@string/set_language">
 
         <CheckBoxPreference
             android:id="@+id/italian_chekbox"
+            android:defaultValue="false"
             android:key="pref_language_italian"
-            android:title="@string/italian"
-            android:summary="Imposta lingua Italiana"
-            android:defaultValue="false" />
+            android:summary="@string/set_italian"
+            android:title="@string/italian" />
 
         <CheckBoxPreference
             android:id="@+id/english_chekbox"
+            android:defaultValue="false"
             android:key="pref_language_english"
-            android:title="@string/english"
-            android:summary="Imposta lingua Inglese"
-            android:defaultValue="false" />
+            android:summary="@string/set_english"
+            android:title="@string/english" />
 
         <!-- Altre preferenze qui -->
     </PreferenceCategory>
