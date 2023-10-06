@@ -1,5 +1,6 @@
 package it.step.moviecatalog.service
 
+import it.step.moviecatalog.model.Cinema
 import it.step.moviecatalog.model.Movie
 import retrofit2.Response
 import retrofit2.http.GET
@@ -21,5 +22,14 @@ interface MovieService {
 
     @GET("movie/type/{type}")
     suspend fun findMovieByType(@Path("type") type : String) : Response<List<Movie>>
+
+    @GET("cinema")
+    suspend fun getAllCinemas() : Response<List<Cinema>>
+
+    @GET("cinema/{id}")
+    suspend fun getCinemaByID(@Path("id") id : Int) : Response<Cinema>
+
+    @GET("cinema/find/{name}")
+    suspend fun findCinemaByName(@Path("name") title : String) : Response<List<Cinema>>
 
 }
