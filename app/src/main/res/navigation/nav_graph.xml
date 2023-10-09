@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cinemaMapFragment"
+            app:destination="@id/cinemaMapFragment" />
 
     </fragment>
     <fragment
@@ -78,6 +81,11 @@
         android:id="@+id/settingsFragment"
         android:name="it.step.moviecatalog.fragment.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/cinemaMapFragment"
+        android:name="it.step.moviecatalog.fragment.CinemaMapFragment"
+        android:label="fragment_cinema_map"
+        tools:layout="@layout/fragment_cinema_map" />
 
 
 </navigation>

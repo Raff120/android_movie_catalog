@@ -7,7 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiManager {
 
     companion object {
-        val BASE_URL = "http://192.168.3.31:8080/movie-catalog/"
+//        val BASE_URL = "http://192.168.3.31:8080/movie-catalog/"
+        val BASE_URL = "http://192.168.1.33:8080/movie-catalog/"
         var retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)

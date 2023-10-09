@@ -17,4 +17,10 @@
         android:title="@string/categories"
         android:titleTextAppearance="@font/regular"
         android:icon="@drawable/ic_movies_24"/>
+
+    <item
+        android:id="@+id/our_cinemas"
+        android:title="@string/our_cinemas"
+        android:titleTextAppearance="@font/regular"
+        android:icon="@drawable/baseline_map_24"/>
 </menu>

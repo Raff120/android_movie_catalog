@@ -41,6 +41,10 @@ dependencies {
     def retrofitVersion = "2.9.0"
     def nav_version = "2.7.2"
 
+    //Open Street Map
+    implementation 'org.osmdroid:osmdroid-android:6.1.17'
+    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.17'
+
     //Swipe to Refresh Layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
