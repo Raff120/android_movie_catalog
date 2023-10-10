@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.databinding.FragmentCinemaMapBinding
 import it.step.moviecatalog.model.Cinema
@@ -16,6 +15,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.config.Configuration
 
 class CinemaMapFragment : Fragment() {
 
@@ -36,6 +36,8 @@ class CinemaMapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        Configuration.getInstance().userAgentValue = "MovieCatalog" // Sostituisci "myapp" con il nome della tua applicazione
 
         cinemaViewModel.getAllCinemas()
 
