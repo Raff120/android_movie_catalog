@@ -8,10 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import it.step.moviecatalog.util.Storage
 import java.util.Locale
 
-//        val sharedPreferences = getSharedPreferences("language_preferences", Context.MODE_PRIVATE)
-//        var language = sharedPreferences.getString("app_language", "en")
-
-
 class MyApp : Application() {
 
     val storage: Storage by lazy {

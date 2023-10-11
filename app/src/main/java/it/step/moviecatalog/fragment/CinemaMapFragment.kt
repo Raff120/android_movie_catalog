@@ -1,5 +1,6 @@
 package it.step.moviecatalog.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import it.step.moviecatalog.MainActivity
 import it.step.moviecatalog.R
 import it.step.moviecatalog.databinding.FragmentCinemaMapBinding
 import it.step.moviecatalog.model.Cinema
@@ -23,12 +25,16 @@ class CinemaMapFragment : Fragment() {
     private lateinit var bindingCinemaMap: FragmentCinemaMapBinding
     private lateinit var view: View
 
+    private lateinit var mainActivity: Activity
+
     private var cinemaDataList: List<Cinema> = emptyList()
 
     private lateinit var mapView: MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainActivity = requireActivity() as MainActivity
 
     }
 
@@ -40,6 +46,8 @@ class CinemaMapFragment : Fragment() {
         Configuration.getInstance().userAgentValue = "MovieCatalog" // Sostituisci "myapp" con il nome della tua applicazione
 
         cinemaViewModel.getAllCinemas()
+
+        (mainActivity as MainActivity).RequestLocPermissions()
 
         bindingCinemaMap = FragmentCinemaMapBinding.inflate(layoutInflater)
         view = bindingCinemaMap.root
@@ -64,6 +72,8 @@ class CinemaMapFragment : Fragment() {
             }
             addCinemaMarkers()
         }
+
+
 
     }
 

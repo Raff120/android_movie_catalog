@@ -61,5 +61,8 @@
     <string name="set_english">Imposta lingua Inglese</string>
     <string name="set_language">Seleziona Lingua</string>
     <string name="our_cinemas">I nostri Cinema</string>
+    <string name="no_location_perm_dialog">Non è possibile accedere alla tua posizione. L\'app vorrebbe accedere alla tua posizione senza la quale non sarebbe possibile accedere ad alcune funzionalità. Vuoi concedere i permessi?</string>
+    <string name="yes_string">Si</string>
+    <string name="no_string" translatable="false">No</string>
 
 </resources>
