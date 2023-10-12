@@ -41,6 +41,8 @@ dependencies {
     def retrofitVersion = "2.9.0"
     def nav_version = "2.7.2"
 
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
     //Open Street Map
     implementation 'org.osmdroid:osmdroid-android:6.1.17'
     implementation 'org.osmdroid:osmdroid-mapsforge:6.1.17'

@@ -1,13 +1,10 @@
 package it.step.moviecatalog
 
-import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import it.step.moviecatalog.dialogs.LocationPermissionDialog
 import it.step.moviecatalog.util.LocaleUtil
 import it.step.moviecatalog.util.Storage
