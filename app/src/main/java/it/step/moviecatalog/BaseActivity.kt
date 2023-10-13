@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import it.step.moviecatalog.dialogs.LocationPermissionDialog
 import it.step.moviecatalog.util.LocaleUtil
 import it.step.moviecatalog.util.Storage

@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,6 +32,7 @@ import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+
 
 class CinemaMapFragment : Fragment() {
 
@@ -119,6 +121,13 @@ class CinemaMapFragment : Fragment() {
 
         initFloatingButtons()
 
+        if( !(mainActivity as MainActivity).isNetworkConnected(requireContext()) ){
+            binding.reloadFloatingButton.visibility = View.VISIBLE
+            Toast.makeText(requireContext(), getString(R.string.no_connection), Toast.LENGTH_LONG).show()
+        } else {
+            binding.reloadFloatingButton.visibility = View.GONE
+        }
+
         cinemaViewModel.cinemaList.observe(viewLifecycleOwner) { newData ->
             if (newData != null) {
                 cinemaDataList = newData
@@ -182,7 +191,7 @@ class CinemaMapFragment : Fragment() {
                     binding.cinemaAddress.text = cinemaData.address
                     binding.cinemaCard.visibility = View.VISIBLE
                     mapController.zoomTo(16.0)
-                    
+
                 }
 
                 mapController.animateTo(GeoPoint(cinemaData.latitude, cinemaData.longitude))
@@ -268,6 +277,19 @@ class CinemaMapFragment : Fragment() {
             mapController.zoomOut()
         }
 
+        binding.reloadFloatingButton.setOnClickListener {
+            reloadCinemaMarkers()
+        }
+
     }
+
+    fun reloadCinemaMarkers() {
+        val fragment = CinemaMapFragment()
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.ma_nav_graph_host, fragment)
+        transaction?.addToBackStack(null)
+        transaction?.commit()
+    }
+
 
 }
