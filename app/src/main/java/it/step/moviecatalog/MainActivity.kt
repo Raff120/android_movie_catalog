@@ -8,7 +8,6 @@ import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Menu
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -47,7 +46,7 @@ class MainActivity : BaseActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.categoryFragment || destination.id == R.id.detailsFragment || destination.id == R.id.searchFragment || destination.id == R.id.settingsFragment) {
+            if (destination.id == R.id.categoryFragment || destination.id == R.id.detailsFragment || destination.id == R.id.searchFragment || destination.id == R.id.settingsFragment || destination.id == R.id.cinemaMapFragment) {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_24)
 
                 topAppBar.setNavigationOnClickListener {
@@ -73,6 +72,12 @@ class MainActivity : BaseActivity() {
 
                 R.id.cerca -> {
                     navController.navigate(R.id.searchFragment)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+
+                R.id.our_cinemas -> {
+                    navController.navigate(R.id.cinemaMapFragment)
                     drawerLayout.closeDrawers()
                     true
                 }

@@ -56,5 +56,8 @@
     <string name="set_italian">Set italian language</string>
     <string name="set_english">Set english language</string>
     <string name="set_language">Set language</string>
+    <string name="our_cinemas">Our Cinemas</string>
+    <string name="no_location_perm_dialog">It\'s not possible to access your location. The app would like to access your location, without which it wouldn\'t be possible to use certain features. Would you like to grant the permissions?</string>
+    <string name="yes_string">Yes</string>
 
 </resources>

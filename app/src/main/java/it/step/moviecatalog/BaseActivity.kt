@@ -3,7 +3,10 @@ package it.step.moviecatalog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import it.step.moviecatalog.dialogs.LocationPermissionDialog
 import it.step.moviecatalog.util.LocaleUtil
 import it.step.moviecatalog.util.Storage
 
@@ -14,9 +17,18 @@ open class BaseActivity :
         (application as MyApp).storage
     }
 
-    /**
-     * updates the toolbar text locale if it set from the android:label property of Manifest
-     */
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+//                TODO if Location Permission is granted
+            } else {
+//                TODO if Location Permission is not granted
+            }
+        }
+
+
     private fun resetTitle() {
         try {
             val label = packageManager.getActivityInfo(
@@ -49,4 +61,17 @@ open class BaseActivity :
         }
         super.onResume()
     }
+
+    fun RequestLocPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Application can use Location
+        } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            LocationPermissionDialog().show(supportFragmentManager, "LOCATION_PERMISSION_DIALOG")
+
+        } else {
+            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
 }
